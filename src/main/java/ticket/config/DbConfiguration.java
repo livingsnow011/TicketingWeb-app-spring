@@ -9,6 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.util.Properties;
+
 @Configuration
 @PropertySource("classpath:/application.properties")
 public class DbConfiguration {
@@ -21,7 +23,13 @@ public class DbConfiguration {
 
     @Bean
     public DataSource dataSource() {
-        return new HikariDataSource(hikariConfig());
+        return new HikariDataSource(hikariConfig()); }
+
+    @Bean
+    @ConfigurationProperties(prefix="spring.jpa")
+    public Properties hibernateConfig(){
+        return new Properties();
     }
+
 }
 
