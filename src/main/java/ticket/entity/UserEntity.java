@@ -16,6 +16,9 @@ public class UserEntity {
     private Long user_id;
 
     @Column(nullable = false)
+    private String id;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -24,8 +27,8 @@ public class UserEntity {
     @Column(nullable = false)
     private LocalDateTime created_date = LocalDateTime.now();
 
-    @Column(nullable = false)
-    private int current_point = 0;
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int current_point;
 
     /*
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
