@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long user_id;
+    private Long userId;
 
     @Column(nullable = false)
     private String id;
@@ -25,7 +26,7 @@ public class UserEntity {
     private String crypted_pwd;
 
     @Column(nullable = false)
-    private LocalDateTime created_date = LocalDateTime.now();
+    private LocalDate created_date = LocalDate.now();
 
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int current_point;

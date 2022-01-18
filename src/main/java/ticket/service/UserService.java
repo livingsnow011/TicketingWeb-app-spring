@@ -6,7 +6,7 @@ import ticket.entity.UserEntity;
 public interface UserService {
     UserDTO saveUser(UserDTO userDTO) throws Exception;
 
-    UserDTO getUsersByUserId(String userId);
+    UserDTO getUsersByUserId(Long userId);
 
     Iterable<UserEntity> getUsersByAll();
 

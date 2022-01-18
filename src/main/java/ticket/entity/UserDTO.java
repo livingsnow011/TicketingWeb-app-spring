@@ -10,7 +10,7 @@ public class UserDTO {
     private String name;
     private String pwd;
 
-    private Long user_id;
+    private Long userId;
     private String crypted_pwd;
     private LocalDateTime created_date;
     private int current_point;
