@@ -1,6 +1,7 @@
-package ticket.ticketing;
+package ticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import ticket.entity.ShowInfo;
 
 import java.util.List;
 import java.util.Optional;

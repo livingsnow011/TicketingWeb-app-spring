@@ -1,27 +1,22 @@
 package ticket.entity;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-@Table(name="seats")
+@NoArgsConstructor
 @Getter
 public class Seat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="member_id")
-    private Long seatId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    //@ManyToOne
-    //@JoinColumn(name="show_id")
-    @Column(name="show_id")
-    private Long showId;
-
-    @Column(name="show_date")
-    private Date showDate;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="show_info_id")
+    private ShowInfo showInfo;
 
     private String grade;
 
@@ -31,6 +26,13 @@ public class Seat {
     private int totalSeat;
 
     @Column(name="current_count")
-    private int currentCount;
+    private int currentCount = 0;
 
+    @Builder
+    public Seat(ShowInfo showInfo, String grade, int price, int totalSeat) {
+        this.showInfo = showInfo;
+        this.grade = grade;
+        this.price = price;
+        this.totalSeat = totalSeat;
+    }
 }

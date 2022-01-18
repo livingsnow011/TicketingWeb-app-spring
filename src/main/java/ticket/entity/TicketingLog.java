@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import ticket.ticketing.ShowInfo;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,7 +23,7 @@ public class TicketingLog {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private ShowInfo showInfo;
+    private Seat seat;
 
     private LocalDateTime createdTime;
 
@@ -32,9 +31,9 @@ public class TicketingLog {
     private boolean success;
 
     @Builder
-    public TicketingLog(UserEntity user, ShowInfo showInfo, boolean success) {
+    public TicketingLog(UserEntity user, Seat seat, boolean success) {
         this.user = user;
-        this.showInfo = showInfo;
+        this.seat = seat;
         this.success = success;
         this.createdTime = LocalDateTime.now();
     }

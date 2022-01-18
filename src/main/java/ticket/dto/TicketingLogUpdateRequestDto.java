@@ -1,4 +1,4 @@
-package ticket.ticketing.dto;
+package ticket.dto;
 
 import lombok.Builder;
 import lombok.Getter;
