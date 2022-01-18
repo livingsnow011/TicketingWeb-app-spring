@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TicketingLogSaveRequestDto {
-    private Long memberId;
+    private Long userId;
     private Long showId;
 
     @Builder
-    public TicketingLogSaveRequestDto(Long memberId, Long showId){
-        this.memberId = memberId;
+    public TicketingLogSaveRequestDto(Long userId, Long showId){
+        this.userId = userId;
         this.showId = showId;
     }
 }

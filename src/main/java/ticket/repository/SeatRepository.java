@@ -1,6 +1,7 @@
-package ticket.seat;
+package ticket.repository;
 
 import org.springframework.stereotype.Repository;
+import ticket.entity.Seat;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

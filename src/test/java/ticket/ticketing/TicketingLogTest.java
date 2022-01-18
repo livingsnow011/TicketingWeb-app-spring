@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import ticket.entity.TicketingLog;
+import ticket.entity.UserEntity;
+import ticket.repository.TicketingLogRepository;
+import ticket.repository.UserRepository;
 
 import java.util.List;
 
@@ -19,14 +23,14 @@ public class TicketingLogTest {
     TicketingLogRepository ticketingLogRepository;
 
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
 
     @Autowired
     ShowInfoRepository showInfoRepository;
 
     @AfterEach
     public void clear() throws Exception {
-        memberRepository.deleteAll();
+        userRepository.deleteAll();
         ticketingLogRepository.deleteAll();
         showInfoRepository.deleteAll();
     }
@@ -34,13 +38,15 @@ public class TicketingLogTest {
     @Test
     @Transactional
     public void createLog() {
-        Member m = Member.builder().name("jack").build();
+        UserEntity u = new UserEntity();
+        u.setName("jack");
+        u.setCrypted_pwd("999");
         ShowInfo s = ShowInfo.builder().name("SpiderMan").build();
 
 
-        List<Member> check = memberRepository.findAll();
-        memberRepository.save(m);
-        check = memberRepository.findAll();
+        List<UserEntity> check = userRepository.findAll();
+        userRepository.save(u);
+        check = userRepository.findAll();
 
         List<ShowInfo> checkShowInfo = showInfoRepository.findAll();
 
@@ -48,11 +54,11 @@ public class TicketingLogTest {
 
         checkShowInfo = showInfoRepository.findAll();
 
-        TicketingLog log = TicketingLog.builder().member(m).showInfo(s).build();
+        TicketingLog log = TicketingLog.builder().user(u).showInfo(s).build();
 
         ticketingLogRepository.save(log);
 
-        assertThat(ticketingLogRepository.findAll().get(0).getMember().getName()).isEqualTo("jack");
+        assertThat(ticketingLogRepository.findAll().get(0).getUser().getName()).isEqualTo("jack");
         assertThat(ticketingLogRepository.findAll().get(0).getShowInfo().getName()).isEqualTo("SpiderMan");
     }
 }

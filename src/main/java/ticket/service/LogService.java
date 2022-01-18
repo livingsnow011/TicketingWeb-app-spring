@@ -3,6 +3,10 @@ package ticket.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ticket.entity.TicketingLog;
+import ticket.entity.UserEntity;
+import ticket.repository.TicketingLogRepository;
+import ticket.repository.UserRepository;
 import ticket.ticketing.*;
 import ticket.ticketing.dto.TicketingLogSaveRequestDto;
 import ticket.ticketing.dto.TicketingLogUpdateRequestDto;
@@ -12,16 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class LogService {
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final ShowInfoRepository showInfoRepository;
     private final TicketingLogRepository ticketingLogRepository;
 
     @Transactional
     public Long save(TicketingLogSaveRequestDto logDto) {
-        Member member = memberRepository.findById(logDto.getMemberId()).orElseThrow(() -> new NullPointerException("Cannot find member"));
+        UserEntity user = userRepository.findById(logDto.getUserId()).orElseThrow(() -> new NullPointerException("Cannot find user"));
         ShowInfo showInfo = showInfoRepository.findById(logDto.getShowId()).orElseThrow(() -> new NullPointerException("Cannot find show"));
         TicketingLog newLog = TicketingLog.builder()
-                .member(member)
+                .user(user)
                 .showInfo(showInfo)
                 .build();
 

@@ -1,9 +1,10 @@
-package ticket.ticketing;
+package ticket.entity;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import ticket.ticketing.ShowInfo;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class TicketingLog {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Member member;
+    private UserEntity user;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
@@ -31,8 +32,8 @@ public class TicketingLog {
     private boolean success;
 
     @Builder
-    public TicketingLog(Member member, ShowInfo showInfo, boolean success) {
-        this.member = member;
+    public TicketingLog(UserEntity user, ShowInfo showInfo, boolean success) {
+        this.user = user;
         this.showInfo = showInfo;
         this.success = success;
         this.createdTime = LocalDateTime.now();

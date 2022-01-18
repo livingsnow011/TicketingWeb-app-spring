@@ -1,4 +1,4 @@
-package ticket.seat;
+package ticket.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Table(name="seats")
 @Getter
-@Setter
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

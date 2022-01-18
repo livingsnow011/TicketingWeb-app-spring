@@ -18,6 +18,6 @@ public class UserController {
         UserEntity user = new UserEntity();
         user.setName(name);
         userService.saveUser(user);
-        return "무야호";
+        return "200";
     }
 }

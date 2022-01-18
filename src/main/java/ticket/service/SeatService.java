@@ -1,9 +1,10 @@
-package ticket.seat;
+package ticket.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ticket.entity.Seat;
+import ticket.repository.SeatRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

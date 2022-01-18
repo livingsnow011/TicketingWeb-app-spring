@@ -24,3 +24,7 @@ hs_err_pid*
 
 # 프로퍼티 파일 이그노어
 *.properties
+
+.gradle
+.idea
+build
