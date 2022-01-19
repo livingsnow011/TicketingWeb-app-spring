@@ -3,15 +3,15 @@ package ticket.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ticket.dto.SeatResponseDto;
-import ticket.dto.SeatSaveRequestDto;
-import ticket.dto.ShowInfoResponseDto;
-import ticket.dto.ShowInfoSaveRequestDto;
+import ticket.dto.*;
 import ticket.entity.Seat;
+import ticket.entity.ShowDate;
 import ticket.entity.ShowInfo;
 import ticket.repository.SeatRepository;
+import ticket.repository.ShowDateRepository;
 import ticket.repository.ShowInfoRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +20,7 @@ import java.util.List;
 public class ShowAndSeatService {
     private final ShowInfoRepository showInfoRepository;
     private final SeatRepository seatRepository;
+    private final ShowDateRepository showDateRepository;
 
     @Transactional
     public String saveShowAndSeat(ShowInfoSaveRequestDto dto){
@@ -27,23 +28,43 @@ public class ShowAndSeatService {
                 .name(dto.getName())
                 .classification(dto.getClassification())
                 .description(dto.getDescription())
-                .startDate(dto.getStartDate())
                 .build();
 
         showInfoRepository.save(newShow);
 
-        for (SeatSaveRequestDto seatDto : dto.getSeatSaveRequestDtoList()) {
-            Seat newSeat = Seat.builder()
+        for (LocalDateTime time : dto.getStartDate()) {
+            ShowDate newDate = ShowDate.builder()
                     .showInfo(newShow)
-                    .grade(seatDto.getGrade())
-                    .price(seatDto.getPrice())
-                    .totalSeat(seatDto.getTotalSeat())
-                    .build();
+                    .showDate(time).build();
 
-            seatRepository.save(newSeat);
+            showDateRepository.save(newDate);
+        }
+
+        for (SeatSaveRequestDto seatDto : dto.getSeatSaveRequestDtoList()) {
+            // 좌석 정보를 생성할 때 newShow의 공연 시각별 좌석 정보를 생성함
+            for (ShowDate showDate : showDateRepository.findByShowInfoId(newShow.getId())) {
+                Seat newSeat = Seat.builder()
+                        .showInfo(newShow)
+                        .showDate(showDate.getShowDate())
+                        .grade(seatDto.getGrade())
+                        .price(seatDto.getPrice())
+                        .totalSeat(seatDto.getTotalSeat())
+                        .build();
+                System.out.println(newSeat.getShowDate());
+                seatRepository.save(newSeat);
+            }
         }
 
         return "Post show info and seat successfully";
+    }
+
+    @Transactional
+    public String updateSeat(SeatUpdateRequestDto requestDto) {
+        Seat seat = seatRepository.getById(requestDto.getId());
+
+        seat.addCurrentCount(requestDto.getAddCount());
+
+        return "update complete";
     }
 
     @Transactional
@@ -92,25 +113,29 @@ public class ShowAndSeatService {
         return dtoList;
     }
 
-    public ShowInfoResponseDto transferToResponse(ShowInfo showInfo) {
-        ShowInfoResponseDto responseDto = new ShowInfoResponseDto(showInfo);
+    @Transactional
+    public SeatResponseDto findSeatById(Long id) {
+        Seat seat = seatRepository.findById(id).orElseThrow(() -> new NullPointerException("Cannot find seat"));
 
-        List<SeatResponseDto> seatList = new ArrayList<>();
-
-        showInfo.getSeatList().forEach((seat -> seatList.add(new SeatResponseDto(seat))));
-
-        responseDto.setSeatList(seatList);
+        SeatResponseDto responseDto = transferToResponse(seat);
 
         return responseDto;
     }
 
+    @Transactional
+    public List<ShowDate> findLotteryTarget() {
+        return showDateRepository.findLotteryTarget();
+    }
+
+    public List<Seat> findLotterySeatByTimeAndShowInfoId(LocalDateTime time, Long id) {
+        return seatRepository.findLotterySeatByTimeAndShowInfoId(time, id);
+    }
+
+    public ShowInfoResponseDto transferToResponse(ShowInfo showInfo) {
+        return new ShowInfoResponseDto(showInfo);
+    }
+
     public SeatResponseDto transferToResponse(Seat seat) {
-        SeatResponseDto responseDto = new SeatResponseDto(seat);
-
-        ShowInfoResponseDto showInfoResponseDto = transferToResponse(seat.getShowInfo());
-
-        responseDto.setShowInfo(showInfoResponseDto);
-
-        return responseDto;
+        return new SeatResponseDto(seat);
     }
 }

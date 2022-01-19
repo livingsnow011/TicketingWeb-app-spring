@@ -1,17 +1,17 @@
 package ticket.dto;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor
-public class TicketingLogSaveRequestDto {
+@Data
+public class TicketingSaveRequestDto {
     private Long userId;
     private Long seatId;
 
     @Builder
-    public TicketingLogSaveRequestDto(Long userId, Long seatId){
+    public TicketingSaveRequestDto(Long userId, Long seatId) {
         this.userId = userId;
         this.seatId = seatId;
     }
