@@ -13,5 +13,5 @@ public class UserDTO {
     private Long userId;
     private String crypted_pwd;
     private LocalDateTime created_date;
-    private int current_point;
+    private Integer current_point;
 }

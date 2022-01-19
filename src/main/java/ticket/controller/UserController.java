@@ -59,4 +59,15 @@ public class UserController {
         return userId;
     }
 
+    @PatchMapping("/users/{userId}")
+    public ResponseEntity<ResponseUser> changeUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        UserDTO responseDTO = userService.changeUser(userId, userDTO);
+
+        ResponseUser responseUser = mapper.map(responseDTO, ResponseUser.class);
+        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+    }
+
 }
