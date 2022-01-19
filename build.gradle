@@ -28,7 +28,7 @@ dependencies {
 
     implementation 'org.modelmapper:modelmapper:2.4.5'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.6.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.8'
 
     compileOnly 'javax.xml.bind:jaxb-api:2.3.0'
     implementation "org.glassfish.jaxb:jaxb-runtime"

@@ -1,12 +1,12 @@
 package ticket.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ticket.dto.SeatResponseDto;
 import ticket.dto.ShowInfoResponseDto;
 import ticket.dto.ShowInfoSaveRequestDto;
-import ticket.entity.Seat;
-import ticket.entity.ShowInfo;
 import ticket.service.ShowAndSeatService;
 
 import java.util.List;
@@ -17,8 +17,8 @@ public class ShowAndSeatController {
     private final ShowAndSeatService showAndSeatService;
 
     @PostMapping("/api/v1/show")
-    public String save(@RequestBody ShowInfoSaveRequestDto requestDto) {
-        return showAndSeatService.saveShowAndSeat(requestDto);
+    public ResponseEntity<String> save(@RequestBody ShowInfoSaveRequestDto requestDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(showAndSeatService.saveShowAndSeat(requestDto));
     }
 
     @DeleteMapping("/api/v1/show/{id}")

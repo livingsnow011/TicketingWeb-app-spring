@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ticket.entity.Seat;
-import ticket.entity.ShowInfo;
 import ticket.entity.TicketingLog;
 import ticket.entity.UserEntity;
 import ticket.repository.SeatRepository;
-import ticket.repository.ShowInfoRepository;
 import ticket.repository.TicketingLogRepository;
 import ticket.repository.UserRepository;
 import ticket.dto.TicketingLogSaveRequestDto;
@@ -20,7 +18,6 @@ import java.util.List;
 @Service
 public class LogService {
     private final UserRepository userRepository;
-    private final ShowInfoRepository showInfoRepository;
     private final SeatRepository seatRepository;
     private final TicketingLogRepository ticketingLogRepository;
 
@@ -29,17 +26,13 @@ public class LogService {
         UserEntity user = userRepository.findById(logDto.getUserId()).orElseThrow(() -> new NullPointerException("Cannot find user"));
         Seat seat = seatRepository.findById(logDto.getSeatId()).orElseThrow(() -> new NullPointerException("Cannot find seat"));
 
-        // 재화 보유량과 가격을 비교해서 결과에 따라 리턴
-        if(seat.getPrice() <= user.getCurrent_point()){
-            TicketingLog newLog = TicketingLog.builder()
-                    .user(user)
-                    .seat(seat)
-                    .build();
+        TicketingLog newLog = TicketingLog.builder()
+                .user(user)
+                .seat(seat)
+                .build();
+        ticketingLogRepository.save(newLog);
 
-            return "예매 성공";
-        }else{
-            return "재화가 부족합니다";
-        }
+        return "logging success";
     }
 
     @Transactional
@@ -69,7 +62,12 @@ public class LogService {
     }
 
     @Transactional
-    public void makeReservation() {
+    public List<TicketingLog> findBySeatId(Long id) {
+        return ticketingLogRepository.findBySeatId(id);
+    }
 
+    @Transactional
+    public List<TicketingLog> findLotteryTargetBySeatId(Long id) {
+        return ticketingLogRepository.findLotteryTargetBySeatId(id);
     }
 }
