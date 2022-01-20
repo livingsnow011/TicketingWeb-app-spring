@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/style.css}" href="../style.css" rel="stylesheet">
+
+    <title>랜딩 페이지</title>
+</head>
+<body>
+    <div class="header">
+        <div class="header__title">
+            <a th:href="@{/}"><p style="font-size: 20px; font-weight: bold;">title</p></a>
+        </div>
+        <nav class="header__menu">
+            <div class="header__menu__item">
+                <ol>
+                    <li><a href="/test/show/movie">영화</a></li>
+                    <li><a href="/test/show/play">연극</a></li>
+                    <li><a href="/test/show/concert">콘서트</a></li>
+                </ol>
+            </div>
+        </nav>
+        <div class="header__user">
+            <p style="font-size: 20px; font-weight: bold;">로그인 마이페이지 아이콘 등등 </p>
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="board">
+
+            <div class="board__name">
+                <span th:text="${subject}"> 게시판 정보</span>
+            </div>
+
+            <div class="showbox">
+                <div th:each="show : ${shows}" class="showbox-container">
+                    <div class="showbox-container-image">
+                    </div>
+
+                    <div class="showbox-container-description">
+                        <span th:text="${show.name}"> 카운트 . 이름</span>
+                    </div>
+                </div>
+            </div>
+            <!-- <table border="1">
+                <tr>
+                    <th>showname</th>
+                    <th>showid</th>
+                </tr>
+                <tr th:each="show : ${shows}">
+                    <td th:text="${show.name}">username</td>
+                    <td th:text="${show.id}">0</td>
+                </tr>
+            </table>
+            <div class="board__name"></div>
+            <div class="board__container">
+                <div class="board__image"></div>
+                <div class="board__description"></div>
+            </div> -->
+        </div>
+    </div>
+
+<!--    <div class="footer">-->
+
+<!--    </div>-->
+</body>
+</html>

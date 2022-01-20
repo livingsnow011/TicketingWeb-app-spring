@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/style.css}" href="style.css" rel="stylesheet">
+    <title>랜딩 페이지</title>
+</head>
+<body>
+    <div class="header">
+        <div class="header__title">
+            <a th:href="@{/}"><p style="font-size: 20px; font-weight: bold;">title</p></a>
+        </div>
+        <nav class="header__menu">
+            <div class="header__menu__item">
+                <ol>
+                    <li><a href="/test/show/movie">영화</a></li>
+                    <li><a href="/test/show/play">연극</a></li>
+                    <li><a href="/test/show/concert">콘서트</a></li>
+                </ol>
+            </div>
+        </nav>
+        <div class="header__user">
+            <p style="font-size: 20px; font-weight: bold;">로그인 마이페이지 아이콘 등등 </p>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="owl-carousel owl-theme">
+            <div class="slider__test"><img class="test" src="/img/test.jpeg"></div>
+            <div class="slider__test"><img class="test" src="/img/test2.jpeg"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p style="font-size: 20px; font-weight: bold;">풋 터 </p>
+    </div>
+
+    <script src="./js/owl.carousel.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
