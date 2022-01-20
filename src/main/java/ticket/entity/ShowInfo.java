@@ -25,11 +25,14 @@ public class ShowInfo {
 
     private String description;
 
+    private String posterURI;
+
 
     @Builder
-    public ShowInfo(String name, String classification, String description) {
+    public ShowInfo(String name, String classification, String description, String posterURI) {
         this.name = name;
         this.classification = classification;
         this.description = description;
+        this.posterURI = posterURI;
     }
 }

@@ -35,10 +35,4 @@ public class LogController {
 
         return ResponseEntity.status(HttpStatus.OK).body("갱신 성공");
     }
-
-    @DeleteMapping("/log/{id}")
-    public void delete(@PathVariable Long id) {
-        // TODO 환불처리
-        logService.delete(id);
-    }
 }

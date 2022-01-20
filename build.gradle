@@ -30,6 +30,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.8'
 
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1'
+
+
     compileOnly 'javax.xml.bind:jaxb-api:2.3.0'
     implementation "org.glassfish.jaxb:jaxb-runtime"
 

@@ -17,12 +17,10 @@ public class TicketingLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private UserEntity user;
+    private Long userId;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @ManyToOne
+    @JoinColumn(name = "seat_id")
     private Seat seat;
 
     private LocalDateTime createdTime;
@@ -31,8 +29,8 @@ public class TicketingLog {
     private boolean success;
 
     @Builder
-    public TicketingLog(UserEntity user, Seat seat, boolean success) {
-        this.user = user;
+    public TicketingLog(Long userId, Seat seat, boolean success) {
+        this.userId = userId;
         this.seat = seat;
         this.success = success;
         this.createdTime = LocalDateTime.now();

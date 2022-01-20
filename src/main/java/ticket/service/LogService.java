@@ -27,7 +27,7 @@ public class LogService {
         Seat seat = seatRepository.findById(logDto.getSeatId()).orElseThrow(() -> new NullPointerException("Cannot find seat"));
 
         TicketingLog newLog = TicketingLog.builder()
-                .user(user)
+                .userId(user.getUserId())
                 .seat(seat)
                 .build();
         ticketingLogRepository.save(newLog);
@@ -47,7 +47,6 @@ public class LogService {
     @Transactional
     public void delete(Long id) {
         TicketingLog log = ticketingLogRepository.findById(id).orElseThrow(() -> new NullPointerException("Cannot find log"));
-
         ticketingLogRepository.delete(log);
     }
 

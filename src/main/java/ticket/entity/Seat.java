@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -15,9 +16,12 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="show_info_id")
     private ShowInfo showInfo;
+
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private List<TicketingLog> ticketingLogList;
 
     private LocalDateTime showDate;
 

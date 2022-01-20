@@ -16,6 +16,8 @@ public class ShowInfoResponseDto {
     private String name;
     private List<Long> seatIdList;
     private String description;
+    private String posterURI;
+    private String[] files;
 
     public ShowInfoResponseDto(ShowInfo showInfo) {
         this.id = showInfo.getId();
@@ -23,5 +25,6 @@ public class ShowInfoResponseDto {
         this.name = showInfo.getName();
         this.seatIdList = new ArrayList<Long>(showInfo.getSeatList().stream().map((seat -> seat.getId())).collect(Collectors.toList()));
         this.description = showInfo.getDescription();
+        this.posterURI = showInfo.getPosterURI();
     }
 }

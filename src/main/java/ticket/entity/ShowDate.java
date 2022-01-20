@@ -15,15 +15,13 @@ public class ShowDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="show_info_id")
-    private ShowInfo showInfo;
+    private Long showInfoId;
 
     private LocalDateTime showDate;
 
     @Builder
-    public ShowDate(ShowInfo showInfo, LocalDateTime showDate) {
-        this.showInfo = showInfo;
+    public ShowDate(Long showInfoId, LocalDateTime showDate) {
+        this.showInfoId = showInfoId;
         this.showDate = showDate;
     }
 }

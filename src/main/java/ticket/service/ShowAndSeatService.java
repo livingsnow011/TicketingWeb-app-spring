@@ -28,13 +28,14 @@ public class ShowAndSeatService {
                 .name(dto.getName())
                 .classification(dto.getClassification())
                 .description(dto.getDescription())
+                .posterURI(dto.getPosterURI())
                 .build();
 
         showInfoRepository.save(newShow);
 
         for (LocalDateTime time : dto.getStartDate()) {
             ShowDate newDate = ShowDate.builder()
-                    .showInfo(newShow)
+                    .showInfoId(newShow.getId())
                     .showDate(time).build();
 
             showDateRepository.save(newDate);
@@ -50,7 +51,6 @@ public class ShowAndSeatService {
                         .price(seatDto.getPrice())
                         .totalSeat(seatDto.getTotalSeat())
                         .build();
-                System.out.println(newSeat.getShowDate());
                 seatRepository.save(newSeat);
             }
         }
@@ -69,6 +69,7 @@ public class ShowAndSeatService {
 
     @Transactional
     public void deleteShowAndSeat(Long id) {
+        showDateRepository.deleteAll(showDateRepository.findByShowInfoId(id));
         showInfoRepository.delete(showInfoRepository.getById(id));
     }
 
@@ -123,12 +124,8 @@ public class ShowAndSeatService {
     }
 
     @Transactional
-    public List<ShowDate> findLotteryTarget() {
-        return showDateRepository.findLotteryTarget();
-    }
-
-    public List<Seat> findLotterySeatByTimeAndShowInfoId(LocalDateTime time, Long id) {
-        return seatRepository.findLotterySeatByTimeAndShowInfoId(time, id);
+    public List<Seat> findLotteryTarget() {
+        return seatRepository.findLotteryTarget();
     }
 
     public ShowInfoResponseDto transferToResponse(ShowInfo showInfo) {
