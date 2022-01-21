@@ -28,3 +28,6 @@ hs_err_pid*
 .gradle
 .idea
 build
+
+## 포스터 각자 db에 생성되서
+poster/
