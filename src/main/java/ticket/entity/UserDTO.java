@@ -2,6 +2,7 @@ package ticket.entity;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,6 +13,6 @@ public class UserDTO {
 
     private Long userId;
     private String crypted_pwd;
-    private LocalDateTime created_date;
+    private LocalDate created_date;
     private Integer current_point;
 }

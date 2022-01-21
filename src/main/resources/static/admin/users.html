@@ -1,117 +1,130 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-</head>
+  <body class="container">
+    <header></header>
+    <section class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h3>사용자 관리</h3>
+        <form id="findUserForm">
+          <input
+            id="findUserNameInput"
+            type="text"
+            placeholder="아이디로 검색하세요"
+          />
+          <button>찾기</button>
+        </form>
+        <button id="showAll" hidden>전체보기</button>
+        <ul id="userList"></ul>
+      </div>
+      <div class="col-2"></div>
+    </section>
+    <footer></footer>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const API_URL = "http://localhost:8080";
 
-<body>
-  <header></header>
-  <section class="container">
-    <h3>사용자 관리</h3>
-    <form id="findUserForm">
-      <input id="findUserNameInput" type="text">
-      <button>찾기</button>
-    </form>
-    <button id="showAll" hidden>전체보기</button>
-    <ul id="userList">
-    </ul>
-  </section>
-  <footer>
-
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    const API_URL = 'http://192.168.200.171:8080';
-
-    function init() {
-      getUsers();
-      addEventListener();
-    }
-
-    function addEventListener() {
-      const findUserNameInput = document.getElementById('findUserNameInput');
-      const findUserForm = document.getElementById('findUserForm');
-      const showAllButton = document.getElementById('showAll');
-
-      findUserForm.addEventListener('submit', e => {
-        e.preventDefault();
-        findUser(findUserNameInput.value);
-      });
-
-      showAllButton.addEventListener('click', () => {
-        emptyList();
+      function init() {
         getUsers();
-        showAllButton.hidden = true;
-        findUserNameInput.value = '';
-      });
-    }
-
-    function getUsers() {
-      axios.get(`${API_URL}/users`)
-        .then(data => {
-          data.data.forEach(user => {
-            renderUser(user);
-          });
-        }).catch(e => {
-          console.error(e);
-        });
-    }
-
-    function findUser(id) {
-      if (id.length == 0) {
-        return;
+        addEventListener();
       }
-      
-      axios.get(`${API_URL}/users/${id}`)
-      .then(data => {
-        console.log(data);
-        emptyList();
-        renderUser(data.data);
-        showReloadButton();
-      }).catch(e => {
-        console.error(e);
-      })
-    }
 
-    function showReloadButton() {
-      const showAll = document.getElementById('showAll');
-      showAll.removeAttribute('hidden');
-    }
+      function getUsers() {
+        axios
+          .get(`${API_URL}/users`)
+          .then((data) => {
+            data.data.forEach((user) => {
+              renderUser(user);
+            });
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      }
 
-    function emptyList() {
-      const userList = document.getElementById('userList');
-      userList.innerHTML = '';
-    }
+      function addEventListener() {
+        const findUserNameInput = document.getElementById("findUserNameInput");
+        const findUserForm = document.getElementById("findUserForm");
+        const showAllButton = document.getElementById("showAll");
 
-    function renderUser(user) {
-      const userList = document.getElementById('userList');
-      const userDom = document.createElement('li');
-      userDom.id = `user_${user.userId}`;
-      const userInfo = `${user.id}, ${user.name}, ${user.userId}`;
-      const userDeleteButton = document.createElement('button');
-      userDeleteButton.innerText = '삭제';
-      userDeleteButton.addEventListener('click', () => {
-        deleteUser(user.userId);
-      });
+        findUserForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          findUser(findUserNameInput.value);
+        });
 
-      userDom.innerText = userInfo;
-      userDom.append(userDeleteButton);
-      userList.append(userDom);
-    }
+        showAllButton.addEventListener("click", () => {
+          emptyList();
+          getUsers();
+          showAllButton.hidden = true;
+          findUserNameInput.value = "";
+        });
+      }
 
-    function deleteUser(id) {
-      axios.delete(`${API_URL}/users/${id}`)
-        .then(result => {
-          document.getElementById(`user_${id}`).remove();
-        })
-        .catch(e => {
-          console.error(e);
-        })
-    }
+      function findUser(id) {
+        if (id.length == 0) {
+          return;
+        }
 
-    init();
-  </script>
-</body>
+        axios
+          .get(`${API_URL}/users/searchId/${id}`)
+          .then((data) => {
+            console.log(data);
+            emptyList();
+            renderUser(data.data);
+            showReloadButton();
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      }
 
+      function showReloadButton() {
+        const showAll = document.getElementById("showAll");
+        showAll.removeAttribute("hidden");
+      }
+
+      function emptyList() {
+        const userList = document.getElementById("userList");
+        userList.innerHTML = "";
+      }
+
+      function renderUser(user) {
+        const userList = document.getElementById("userList");
+        const userDom = document.createElement("li");
+        userDom.id = `user_${user.userId}`;
+        const userInfo = `${user.id}, ${user.name}, ${user.userId}, ${user.created_date}, ${user.current_point}`;
+        const userDeleteButton = document.createElement("button");
+        userDeleteButton.innerText = "삭제";
+        userDeleteButton.addEventListener("click", () => {
+          deleteUser(user.userId);
+        });
+
+        userDom.innerText = userInfo;
+        userDom.append(userDeleteButton);
+        userList.append(userDom);
+      }
+
+      function deleteUser(id) {
+        axios
+          .delete(`${API_URL}/users/${id}`)
+          .then((result) => {
+            document.getElementById(`user_${id}`).remove();
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      }
+
+      init();
+    </script>
+  </body>
 </html>

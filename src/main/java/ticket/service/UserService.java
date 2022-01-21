@@ -10,6 +10,8 @@ public interface UserService {
 
     UserDTO getUsersByUserId(Long userId);
 
+    UserDTO getUsersById(String id);
+
     Iterable<UserEntity> getUsersByAll();
 
     void deleteUser(long userId) throws Exception;

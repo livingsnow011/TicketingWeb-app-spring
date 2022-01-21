@@ -55,8 +55,19 @@ public class UserServiceImpl implements UserService{
         if (userEntity == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        UserDTO userDto = new ModelMapper().map(userEntity, UserDTO.class);
-        return userDto;
+        UserDTO userDTO = new ModelMapper().map(userEntity, UserDTO.class);
+        return userDTO;
+    }
+
+    @Override
+    public UserDTO getUsersById(String id) {
+        UserEntity userEntity = userRepository.findByMyId(id);
+        System.out.println(userEntity);
+        if (userEntity == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        UserDTO userDTO = new ModelMapper().map(userEntity, UserDTO.class);
+        return userDTO;
     }
 
     @Override
