@@ -42,7 +42,7 @@
             
             <div th:each="show:${shows}" class="col mb-3">
               <div class="card h-100 mb-4 rounded-3 shadow-sm">
-                <img th:src="@{{$show.posterURI}}" class="card-img-top" alt="..." height="200">
+                <img th:src="@{${show.posterURI}}" class="card-img-top" alt="..." height="200">
                 <div class="card-body">
                   <h5 th:text="${show.name}"class="card-title text-start">${show.name}</h5>
                   <p th:text="${show.description}" class="card-text text-start">${show.description}</p>
