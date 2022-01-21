@@ -1,6 +1,8 @@
 package ticket.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,4 +14,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addMapping("/**").allowedMethods("*");
                 //.allowedOrigins("*");
     }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setDefaultEncoding("UTF-8");
+        commonsMultipartResolver.setMaxUploadSizePerFile(20 * 1024 * 1024); // 5M
+        return commonsMultipartResolver;
+    }
+
 }
