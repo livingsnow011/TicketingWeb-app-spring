@@ -66,6 +66,11 @@ public class LogService {
     }
 
     @Transactional
+    public List<TicketingLog> findByUserId(Long id) {
+        return ticketingLogRepository.findByUserId(id);
+    }
+
+    @Transactional
     public List<TicketingLog> findLotteryTargetBySeatId(Long id) {
         return ticketingLogRepository.findLotteryTargetBySeatId(id);
     }
