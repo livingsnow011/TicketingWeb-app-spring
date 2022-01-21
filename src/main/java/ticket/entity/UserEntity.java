@@ -29,7 +29,7 @@ public class UserEntity {
     private LocalDate created_date = LocalDate.now();
 
     @Column(nullable = false, columnDefinition = "integer default 0")
-    private int current_point;
+    private Integer current_point;
 
     /*
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

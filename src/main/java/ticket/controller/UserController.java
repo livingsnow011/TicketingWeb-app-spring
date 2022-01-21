@@ -39,6 +39,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
+    @GetMapping("/users/searchId/{id}")
+    public ResponseEntity<ResponseUser> getUsers(@PathVariable("id") String id) {
+        UserDTO userDTO = userService.getUsersById(id);
+        System.out.println(userDTO);
+        ResponseUser responseUser = new ModelMapper().map(userDTO, ResponseUser.class);
+        System.out.println(responseUser);
+        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+    }
+
 
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) throws Exception {
