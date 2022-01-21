@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import ticket.dto.SeatResponseDto;
 import ticket.dto.ShowInfoResponseDto;
 import ticket.dto.ShowInfoSaveRequestDto;
@@ -28,9 +29,11 @@ public class ShowAndSeatController {
     // 공연 포스터와 공연 정보를 동시에 받아오면 ShowInfoSaveRequestDto에 @RequestBody로 자동 매핑이 불가능해짐
     // @RequestPart로 MultipartFile과 json string을 받도록 변경
     @PostMapping("/api/v1/show")
-    public ResponseEntity<String> save(@RequestPart("files") List<MultipartFile> files, @RequestPart("requestDto") String request) throws Exception {
+    public ResponseEntity<String> save(@RequestPart("files") List<MultipartFile> files, @RequestParam("requestDto") String request) throws Exception {
+        System.out.println("start");
         // ObjectMapper로 json string을 deserialize
         ObjectMapper mapper = new ObjectMapper();
+        // JSR310 모듈이 deprecated라서 교체 필요
         mapper.registerModule(new JSR310Module());
         ShowInfoSaveRequestDto requestDto = mapper.readValue(request, new TypeReference<ShowInfoSaveRequestDto>() {
         });
@@ -49,8 +52,6 @@ public class ShowAndSeatController {
     public ResponseEntity<ShowInfoResponseDto> findShowById(@PathVariable Long id) throws Exception{
         ShowInfoResponseDto responseDto = showAndSeatService.findShowInfoById(id);
 
-        responseDto.setFiles(responseDto.getPosterURI().split("&"));
-
         return ResponseEntity.ok().body(responseDto);
     }
 
@@ -62,9 +63,6 @@ public class ShowAndSeatController {
     @GetMapping("/api/v1/show")
     public List<ShowInfoResponseDto> findAllShow() {
         List<ShowInfoResponseDto> responseDtoList = showAndSeatService.findAllShowInfo();
-        for (ShowInfoResponseDto responseDto : responseDtoList) {
-            responseDto.setFiles(responseDto.getPosterURI().split("&"));
-        }
 
         return responseDtoList;
     }
@@ -75,7 +73,7 @@ public class ShowAndSeatController {
     }
 
     public String uploadFileHandler(List<MultipartFile> multipartFileList) throws Exception{
-        String path = "src/main/resources/";
+        String path = "src/main/resources/static";
         StringBuilder fileURI = new StringBuilder();
 
         if (ObjectUtils.isEmpty(multipartFileList)) {
@@ -84,7 +82,7 @@ public class ShowAndSeatController {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MMdd");
         LocalDateTime now = LocalDateTime.now();
-        String folder = "static/img/poster/" + now.format(dtf);
+        String folder = "/img/poster/" + now.format(dtf);
         String storedDir = path + folder;
         File fileDir = new File(storedDir);
         File absDir = new File(fileDir.getAbsolutePath());
@@ -118,7 +116,7 @@ public class ShowAndSeatController {
 
                 String storedFileName = System.nanoTime() + originalFileExtension;
 
-                fileURI.append(folder + "/" + storedFileName + "&");
+                fileURI.append(folder + "/" + storedFileName);
 
                 fileDir = new File(storedDir + "/" + storedFileName);
                 absDir = new File(fileDir.getAbsolutePath());

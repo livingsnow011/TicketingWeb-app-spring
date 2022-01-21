@@ -17,7 +17,6 @@ public class ShowInfoResponseDto {
     private List<Long> seatIdList;
     private String description;
     private String posterURI;
-    private String[] files;
 
     public ShowInfoResponseDto(ShowInfo showInfo) {
         this.id = showInfo.getId();
