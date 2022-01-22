@@ -18,4 +18,7 @@ public interface TicketingLogRepository extends JpaRepository<TicketingLog, Long
 
     @Query("SELECT t FROM TicketingLog t where seat_id = ?1 and success = FALSE")
     List<TicketingLog> findLotteryTargetBySeatId(Long id);
+
+    @Query("SELECT t FROM TicketingLog t where seat_id = ?1 and success = FALSE AND refunded = FALSE")
+    List<TicketingLog> findRefundTargetBySeatId(Long id);
 }

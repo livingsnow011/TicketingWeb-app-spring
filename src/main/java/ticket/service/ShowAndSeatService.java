@@ -131,6 +131,11 @@ public class ShowAndSeatService {
         return seatRepository.findLotteryTarget();
     }
 
+    @Transactional
+    public List<Seat> findRefundTarget() {
+        return seatRepository.findRefundTarget();
+    }
+
     public ShowInfoResponseDto transferToResponse(ShowInfo showInfo) {
         return new ShowInfoResponseDto(showInfo);
     }

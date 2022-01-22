@@ -1,17 +1,18 @@
 package ticket.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import ticket.entity.*;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @NoArgsConstructor
 public class LogResponseDto {
     private Long id;
     private Long userId;
     private SeatResponseDto seat;
+    private String showName;
     private LocalDateTime createdTime;
     private boolean success;
 

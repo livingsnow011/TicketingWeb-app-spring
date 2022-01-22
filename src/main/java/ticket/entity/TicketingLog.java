@@ -28,6 +28,9 @@ public class TicketingLog {
     @ColumnDefault("false")
     private boolean success;
 
+    @ColumnDefault("false")
+    private boolean refunded;
+
     @Builder
     public TicketingLog(Long userId, Seat seat, boolean success) {
         this.userId = userId;
@@ -38,5 +41,9 @@ public class TicketingLog {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public void setRefunded(boolean refunded) {
+        this.refunded = refunded;
     }
 }

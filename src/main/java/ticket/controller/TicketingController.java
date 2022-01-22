@@ -13,6 +13,7 @@ import ticket.dto.*;
 import ticket.entity.*;
 import ticket.service.LogService;
 import ticket.service.ShowAndSeatService;
+import ticket.service.UserService;
 import ticket.service.UserServiceImpl;
 
 import java.time.LocalDateTime;
@@ -75,11 +76,11 @@ public class TicketingController {
         logService.delete(id);
     }
 
-
+    // 추첨 메소드
 //    테스트용 크론탭
-//    @Scheduled(cron = "0/15 * * * * *")
+    @Scheduled(cron = "0/15 * * * * *")
 //    실제 사용할 크론탭
-    @Scheduled(cron = "0 0 * * * *")
+//    @Scheduled(cron = "0 0 * * * *")
     public String draw() {
         // 공연 시작까지 얼마 안남은 공연 id를 받아온다
         // 몇 시간 전부터 추첨을 돌릴지는 Seat repo에 쿼리로 설정
@@ -99,13 +100,40 @@ public class TicketingController {
         }
         return "good";
     }
+
+    // 환불 메소드
+//    테스트용 크론탭
+    @Scheduled(cron = "0/15 * * * * *")
+//    실제 사용할 크론탭
+//    @Scheduled(cron = "0 0 * * * *")
+    public String refund() throws Exception{
+        // 공연 시작이 지난 좌석 정보를 찾아온다
+        List<Seat> lotteryTargetList = showAndSeatService.findLotteryTarget();
+        List<TicketingLog> logList;
+
+        // 받아온 공연 정보가 갖고있는 좌석 정보마다 해당 좌석을 예매한 내역 중 예매에 성공하지 못한 내역을 logList 에 추가한다
+        for (Seat seat : lotteryTargetList) {
+            logList = new ArrayList<>(logService.findRefundTargetBySeatId(seat.getId()));
+
+            // 저장된 내역과 seat의 가격을 가지고 환불을 한다.
+            if(logList.isEmpty()){
+                continue;
+            }else{
+                lottery.doRefund(seat, logList);
+            }
+        }
+        return "refunded";
+    }
 }
+
+
 
 // @Scheduled 와 @Transactional을 동시에 사용할 수가 없어서 클래스를 분리
 @RequiredArgsConstructor
 @Controller
 class Lottery{
     private final LogService logService;
+    private final UserService userService;
     private final ShowAndSeatService showAndSeatService;
 
     @Transactional
@@ -125,11 +153,25 @@ class Lottery{
                 continue;
             } else {
                 TicketingLog log = logList.get(winIdx);
-                logService.update(new TicketingLogUpdateRequestDto(log.getId(), true));
+                logService.update(new TicketingLogUpdateRequestDto(log.getId(), true, false));
                 isAlreadyChosen[winIdx] = true;
                 i++;
             }
         }
         showAndSeatService.updateSeat(new SeatUpdateRequestDto(seat.getId(), i));
+    }
+
+    @Transactional
+    public void doRefund(Seat seat, List<TicketingLog> logList) throws Exception{
+        // 환불 진행
+        for (int i = 0; i < logList.size(); i++) {
+            TicketingLog log = logList.get(i);
+            UserDTO user = userService.getUsersByUserId(log.getUserId());
+
+            user.setCurrent_point(user.getCurrent_point() + seat.getPrice());
+
+            userService.changeUser(log.getUserId(), user);
+            logService.update(new TicketingLogUpdateRequestDto(log.getId(), false, true));
+        }
     }
 }

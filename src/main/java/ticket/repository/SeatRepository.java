@@ -10,4 +10,7 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM seat WHERE show_date between current_timestamp AND date_add(current_timestamp, interval 1 day)")
     List<Seat> findLotteryTarget();
+
+    @Query("SELECT s FROM Seat s WHERE show_date > current_timestamp")
+    List<Seat> findRefundTarget();
 }

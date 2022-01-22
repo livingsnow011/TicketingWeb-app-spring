@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 public class TicketingLogUpdateRequestDto {
     private Long ticketingLogId;
     private boolean success;
+    private boolean refunded;
 
     @Builder
-    public TicketingLogUpdateRequestDto(Long id, boolean success) {
+    public TicketingLogUpdateRequestDto(Long id, boolean success, boolean refunded) {
         this.ticketingLogId = id;
         this.success = success;
+        this.refunded = refunded;
     }
 }

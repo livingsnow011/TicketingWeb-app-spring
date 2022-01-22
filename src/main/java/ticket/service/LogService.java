@@ -40,6 +40,7 @@ public class LogService {
         TicketingLog log = ticketingLogRepository.findById(updateRequestDto.getTicketingLogId()).orElseThrow(() -> new NullPointerException("Cannot find log"));
 
         log.setSuccess(updateRequestDto.isSuccess());
+        log.setRefunded(updateRequestDto.isRefunded());
 
         return updateRequestDto.getTicketingLogId();
     }
@@ -73,5 +74,10 @@ public class LogService {
     @Transactional
     public List<TicketingLog> findLotteryTargetBySeatId(Long id) {
         return ticketingLogRepository.findLotteryTargetBySeatId(id);
+    }
+
+    @Transactional
+    public List<TicketingLog> findRefundTargetBySeatId(Long id) {
+        return ticketingLogRepository.findRefundTargetBySeatId(id);
     }
 }
