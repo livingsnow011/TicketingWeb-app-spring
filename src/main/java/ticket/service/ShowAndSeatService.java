@@ -14,6 +14,7 @@ import ticket.repository.ShowInfoRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -77,7 +78,9 @@ public class ShowAndSeatService {
     public ShowInfoResponseDto findShowInfoById(Long id) {
         ShowInfo showInfo = showInfoRepository.getById(id);
         ShowInfoResponseDto responseDto = transferToResponse(showInfo);
+        List<LocalDateTime> date = showDateRepository.findByShowInfoId(id).stream().map(showDate -> showDate.getShowDate()).collect(Collectors.toList());
 
+        responseDto.setShowDate(date);
         return responseDto;
     }
 

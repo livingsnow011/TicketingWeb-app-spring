@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ticket.entity.ShowInfo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class ShowInfoResponseDto {
     private String classification;
     private String name;
     private List<Long> seatIdList;
+    private List<LocalDateTime> showDate;
     private String description;
     private String posterURI;
 
