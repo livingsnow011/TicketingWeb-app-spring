@@ -10,7 +10,6 @@ import ticket.dto.SeatResponseDto;
 import ticket.dto.ShowInfoResponseDto;
 import ticket.service.ShowAndSeatService;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
