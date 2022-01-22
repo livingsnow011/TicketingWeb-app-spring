@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService{
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = mapper.map(userDTO, UserEntity.class);
-        System.out.println(userEntity);
-        userEntity.setCrypted_pwd(passwordEncoder.encode(userDTO.getPwd()));
+        userEntity.setCrypted_pwd(userDTO.getPwd()+"123");
 
         userRepository.save(userEntity);
         System.out.println(userEntity);
@@ -87,7 +86,7 @@ public class UserServiceImpl implements UserService{
     public UserEntity login(String id, String pwd) {
         UserEntity userEntity = userRepository.findById(id);
         System.out.println(userEntity);
-        if (userEntity.getCrypted_pwd().equals(passwordEncoder.encode(pwd))){
+        if (userEntity.getCrypted_pwd().equals(pwd+"123")){
             return userEntity;
         } else {
             return null;

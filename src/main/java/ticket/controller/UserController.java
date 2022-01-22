@@ -3,8 +3,7 @@ package ticket.controller;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ticket.entity.*;
 import ticket.service.UserService;
@@ -55,11 +54,7 @@ public class UserController {
 
         UserDTO userDTO = userService.saveUser(mapper.map(user, UserDTO.class));
 
-        System.out.println("createControllerResponseDTO : " + userDTO);
-
         ResponseUser responseUser = mapper.map(userDTO, ResponseUser.class);
-
-        System.out.println("createControllerResponseUser : " + responseUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
@@ -83,17 +78,36 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseUser> login(@RequestBody RequestLogin requestLogin, HttpServletResponse response) {
+    public String login(@RequestBody RequestLogin requestLogin, HttpServletResponse response, @CookieValue(name = "userId", required = false) Long userId) {
+        //ResponseEntity<ResponseUser> login(@RequestBody RequestLogin requestLogin, HttpServletResponse response, @CookieValue(name = "userId", required = false) Long userId) {
+        if (userId != null) {
+            return "redirect:http://localhost:8080/";
+        }
+
         UserEntity userEntity = userService.login(requestLogin.getId(), requestLogin.getPwd());
         if (userEntity == null) {
             return null;
         }
-        System.out.println("come2 : " + userEntity);
-        Cookie idCookie = new Cookie("userId", String.valueOf(userEntity.getUserId()));
-        response.addCookie(idCookie);
+        Cookie userIdCookie = new Cookie("userId", String.valueOf(userEntity.getUserId()));
+        response.addCookie(userIdCookie);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Set-Cookie", "userId" + String.valueOf(userEntity.getUserId()));
 
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add(HttpHeaders.COOKIE, "userId" + "=" + userEntity.getUserId());
+//        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
         ModelMapper mapper = new ModelMapper();
         ResponseUser responseUser = mapper.map(userEntity, ResponseUser.class);
-        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+        return "redirect:http://localhost:8080/";
+        //return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("userId", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
+
 }
