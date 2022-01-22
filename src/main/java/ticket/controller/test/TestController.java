@@ -5,12 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ticket.dto.SeatResponseDto;
 import ticket.dto.ShowInfoResponseDto;
 import ticket.service.ShowAndSeatService;
 
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -23,6 +25,7 @@ public class TestController {
         List<ShowInfoResponseDto> shows = showAndSeatService.findAllShowInfo();
 
         shows.removeIf(n -> (!n.getClassification().equals("movie")));
+        Collections.reverse(shows);
 
         model.addAttribute("subject","MOVIE");
         model.addAttribute("shows",shows);
@@ -36,6 +39,7 @@ public class TestController {
         List<ShowInfoResponseDto> shows = showAndSeatService.findAllShowInfo();
 
         shows.removeIf(n -> (!n.getClassification().equals("play")));
+        Collections.reverse(shows);
 
         model.addAttribute("subject","PLAY");
         model.addAttribute("shows",shows);
@@ -49,6 +53,7 @@ public class TestController {
         List<ShowInfoResponseDto> shows = showAndSeatService.findAllShowInfo();
 
         shows.removeIf(n -> (!n.getClassification().equals("concert")));
+        Collections.reverse(shows);
 
         model.addAttribute("subject","CONCERT");
         model.addAttribute("shows",shows);
@@ -57,4 +62,23 @@ public class TestController {
         return "show";
     }
 
+    @GetMapping("/ticketing")
+    public String ticketInfo(@RequestParam String showId, Model model){
+        long id = Long.parseLong(showId);
+        ShowInfoResponseDto show = showAndSeatService.findShowInfoById(id);
+        List<SeatResponseDto> seats =showAndSeatService.findSeatByShowInfoId(id);
+
+        List<String> gradeList = new ArrayList<>();
+        for (SeatResponseDto seat : seats) {
+                        gradeList.add(seat.getGrade());
+        }
+        //grade리스트만
+        List<String> distinctGradeList = gradeList.stream().distinct().collect(Collectors.toList());
+
+
+        model.addAttribute("gradeList",distinctGradeList);
+        model.addAttribute("show",show);
+        model.addAttribute("seats",seats);
+        return "reservation";
+    }
 }

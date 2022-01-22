@@ -8,7 +8,6 @@
     <title>게시판 페이지</title>
 
     <style>
-        .b{border:solid black;}
         .c{
             width: 70rem;
             height: 30rem;
@@ -38,27 +37,32 @@
             </div>
         </div>
     </header>
+
     <!--메인-->
     <div class="container p-5 mb-4 bg-light rounded-3 h-100 pt-0 ">
         <div class="container-fluid py-5 pb-1 ">
-            <h1 th:text=${show.name} class="display-5 text-starter fw-bold mb-4">${show.classificaiton} : ${show.name}</h1>
+            <h1 th:text="${show.name}" class="display-5 text-starter fw-bold mb-4">${show.classificaiton} : ${show.name}</h1>
             <hr/>
             <img th:src="@{${show.posterURI}}" src="./img/test1.jpeg" class=" c rounded-3 img-thumbnail">
             <hr/>
         </div>
         <div class="container-fluid py-5 pt-1 pb-1 ">
-            <form >
-                <select class="form-select form-select-lg mb-3 col-6" aria-label="date">
-                    <option value="">==공연 날짜 선택==</option>
+            <form>
+                <select id="selectdate" class="form-select form-select-lg mb-3 col-6" aria-label="date" onchange="dateSelect()">
+                    <option value="0">==공연 날짜 선택==</option>
+                    <option th:each="showdate : ${show.showDate}" th:value="${showdate}"
+                            th:text="${showdate}">NULL</option>
                 </select>
-                <select class="form-select form-select-lg mb-3" aria-label="seat_grade">
-                    <option value="">==좌석 등급 선택==</option>
+                <select id="selectgrade" class="form-select form-select-lg mb-3" aria-label="seat_grade" onchange="gradeSelect()">
+                    <option value="0">==좌석 등급 선택==</option>
+                    <option th:each="grade : ${gradeList}" th:value="${grade}"
+                            th:text="${grade}" >NULL</option>
                 </select>
                 <hr/>
-                <div class="row mt-4 ">
-                    <h1 class="display-5 fw-bold">select 후 짠하고 나타났음 좋겠음</h1>
-                    <h1 class="display-5 fw-bold">현재 ${seat.current_count} / ${seat.totla_seat} </h1>
-                    <h1 class="display-5 fw-bold">Price: ${seat.price} 원</h1>
+                <div class="row mt-4 mb-3">
+                    <span id="seat" class="display-5 fw-bold text-left">좌석: 0 / 0 </span>
+                    <hr>
+                    <span id="price" class="display-5 fw-bold text-right">가격: 0 원</span>
                 </div>
                 <hr/>
                 <button type="button" class="w-100 btn col-md-2 btn-primary"><h1>예매</h1></button>
@@ -81,5 +85,55 @@
         <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
         </ul>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/reservation.js"></script>
+    <script th:inline="javascript">
 
+        /*[# th:each="seat : ${seats}"]*/
+
+        /*[/]*/
+
+        var isDateSelected = false;
+        var isGradeSelected = false;
+        var dateValue
+        var gradeValue
+
+        function dateSelect(){
+            var dateSelected = document.getElementById("selectdate");
+            dateValue = dateSelected.options[dateSelected.selectedIndex].value;
+            console.log(dateValue);
+
+            if(dateValue === "0") {
+                isDateSelected = false;
+            } else if(isGradeSelected!==false){
+                isDateSelected =true;
+                document.getElementById('seat').innerText = "좌석을 바꿀 순 있다. "+gradeValue;
+                document.getElementById('price').innerText = "가격을 바꿀 순 있다. "+dateValue;
+            }else{
+                isDateSelected =true;
+            }
+
+        }
+
+        function gradeSelect() {
+            var gradeSelected = document.getElementById("selectgrade");
+            gradeValue = gradeSelected.options[gradeSelected.selectedIndex].value;
+            console.log(gradeValue);
+
+            if(gradeValue === "0") {
+                isGradeSelected = false;
+            } else if(isDateSelected!==false){
+                isGradeSelected=true
+                console.log(gradeValue);
+                console.log(dateValue);
+                document.getElementById('seat').innerText = "좌석을 바꿀 순 있다. "+gradeValue;
+                document.getElementById('price').innerText = "가격을 바꿀 순 있다. "+dateValue;
+
+            }else{
+                isGradeSelected=true;
+            }
+
+        }
+
+    </script>
 </body>

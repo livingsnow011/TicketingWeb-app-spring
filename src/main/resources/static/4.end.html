@@ -16,7 +16,7 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/}" href="#" class="nav-link px-2 text-white">Title</a></li>
+                    <li><a th:href="@{/}" href="index.html" class="nav-link px-2 text-white">Title</a></li>
                     <li><a href="/test/show/movie" class="nav-link px-2 text-white">Movie</a></li>
                     <li><a href="/test/show/play" class="nav-link px-2 text-white">Play</a></li>
                     <li><a href="/test/show/concert" class="nav-link px-2 text-white">Conecert</a></li>
@@ -30,7 +30,17 @@
         </div>
     </header>
 
-    <div class="main"></div>
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold">예매가 완료되었습니다</h1>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4 mt-4">[My-page]에서 예매 내역을 확인해주세요.</p>
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href=th:href="@{/}" href="index.html">
+                <button type="button" class="btn btn-primary btn-lg px-4 gap-3">홈으로</button>
+            </a>
+          </div>
+        </div>
+      </div>
 
 
     <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

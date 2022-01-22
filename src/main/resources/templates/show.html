@@ -7,7 +7,6 @@
     <!-- <link th:href="@{/style.css}" href="style.css" rel="stylesheet"> -->
     <title>게시판 페이지</title>
 
-    </style>
 </head>
 <body>
     <header class="p-3 bg-dark text-white">
@@ -46,7 +45,9 @@
                 <div class="card-body">
                   <h5 th:text="${show.name}"class="card-title text-start">${show.name}</h5>
                   <p th:text="${show.description}" class="card-text text-start">${show.description}</p>
-                  <button type="button" class="w-100 btn btn-lg btn-outline-primary">예매하기</button>
+                  <a th:href="@{/test/ticketing(showId=${show.id})}">
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">예매하기</button>
+                  </a>
                 </div>
               </div>
             </div>
