@@ -1,5 +1,6 @@
 package ticket.service;
 
+import ticket.entity.RequestLogin;
 import ticket.entity.UserDTO;
 import ticket.entity.UserEntity;
 
@@ -15,6 +16,8 @@ public interface UserService {
     Iterable<UserEntity> getUsersByAll();
 
     void deleteUser(long userId) throws Exception;
+
+    UserEntity login(String id, String pwd);
 
 
 }

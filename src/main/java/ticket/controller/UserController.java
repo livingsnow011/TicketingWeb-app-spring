@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ticket.entity.RequestUser;
-import ticket.entity.ResponseUser;
-import ticket.entity.UserDTO;
-import ticket.entity.UserEntity;
+import ticket.entity.*;
 import ticket.service.UserService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<ResponseUser>> getUsers(){
+    public ResponseEntity<List<ResponseUser>> getUsers() {
         Iterable<UserEntity> userEntityList = userService.getUsersByAll();
         List<ResponseUser> responseUserList = new ArrayList<>();
         userEntityList.forEach(listItem -> {
@@ -53,11 +52,15 @@ public class UserController {
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) throws Exception {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDTO userDTO = mapper.map(user, UserDTO.class);
 
-        UserDTO responseDTO = userService.saveUser(userDTO);
+        UserDTO userDTO = userService.saveUser(mapper.map(user, UserDTO.class));
 
-        ResponseUser responseUser = mapper.map(responseDTO, ResponseUser.class);
+        System.out.println("createControllerResponseDTO : " + userDTO);
+
+        ResponseUser responseUser = mapper.map(userDTO, ResponseUser.class);
+
+        System.out.println("createControllerResponseUser : " + responseUser);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
 
@@ -79,4 +82,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ResponseUser> login(@RequestBody RequestLogin requestLogin, HttpServletResponse response) {
+        UserEntity userEntity = userService.login(requestLogin.getId(), requestLogin.getPwd());
+        if (userEntity == null) {
+            return null;
+        }
+        System.out.println("come2 : " + userEntity);
+        Cookie idCookie = new Cookie("userId", String.valueOf(userEntity.getUserId()));
+        response.addCookie(idCookie);
+
+        ModelMapper mapper = new ModelMapper();
+        ResponseUser responseUser = mapper.map(userEntity, ResponseUser.class);
+        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+    }
 }

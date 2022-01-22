@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ticket.entity.RequestLogin;
 import ticket.entity.UserDTO;
 import ticket.entity.UserEntity;
 import ticket.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,11 +30,12 @@ public class UserServiceImpl implements UserService{
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = mapper.map(userDTO, UserEntity.class);
+        System.out.println(userEntity);
         userEntity.setCrypted_pwd(passwordEncoder.encode(userDTO.getPwd()));
 
         userRepository.save(userEntity);
-
-        return mapper.map(userEntity, UserDTO.class);
+        System.out.println(userEntity);
+        return mapper.map(userRepository.findByUserId(userEntity.getUserId()), UserDTO.class);
     }
 
     @Override
@@ -78,5 +81,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUser(long userId) throws Exception {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserEntity login(String id, String pwd) {
+        UserEntity userEntity = userRepository.findById(id);
+        System.out.println(userEntity);
+        if (userEntity.getCrypted_pwd().equals(passwordEncoder.encode(pwd))){
+            return userEntity;
+        } else {
+            return null;
+        }
+
     }
 }

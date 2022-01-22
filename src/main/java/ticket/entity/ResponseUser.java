@@ -11,4 +11,5 @@ public class ResponseUser {
     private Long userId;
     private LocalDate created_date;
     private Integer current_point;
+    private String role;
 }
