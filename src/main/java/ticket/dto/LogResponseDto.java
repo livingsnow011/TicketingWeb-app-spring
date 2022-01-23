@@ -22,7 +22,7 @@ public class LogResponseDto {
         this.userId = log.getUserId();
         this.seat = new SeatResponseDto(log.getSeat());
         this.showName = log.getSeat().getShowName();
-        this.createdTime = LocalDateTime.now();
+        this.createdTime = log.getCreatedTime();
         this.success = log.isSuccess();
         this.refunded = log.isRefunded();
     }
