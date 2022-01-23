@@ -15,29 +15,7 @@
     </style>
 </head>
 <body>
-    <!--헤더-->
-    <header class="p-3 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-                </a>
-
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/}" href="#" class="nav-link px-2 text-white">Title</a></li>
-                    <li><a href="/test/show/movie" class="nav-link px-2 text-white">Movie</a></li>
-                    <li><a href="/test/show/play" class="nav-link px-2 text-white">Play</a></li>
-                    <li><a href="/test/show/concert" class="nav-link px-2 text-white">Conecert</a></li>
-                </ul>
-
-                <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Login</button>
-                    <button type="button" class="btn btn-warning">My-page</button>
-                </div>
-            </div>
-        </div>
-    </header>
-
+    <header th:replace="./fragment/header :: header"></header>
     <!--메인-->
     <div class="container p-5 mb-4 bg-light rounded-3 h-100 pt-0 ">
         <div class="container-fluid py-5 pb-1 ">
@@ -70,21 +48,8 @@
         </div>
     </div>
 
-    <!--풋터-->
-    <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-        </a>
-        <span class="text-muted">© 2021 SESAC</span>
-        </div>
-    
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-        </ul>
-    </footer>
+    <footer th:replace="./fragment/footer :: footer"></footer>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/reservation.js"></script>
     <script th:inline="javascript">
