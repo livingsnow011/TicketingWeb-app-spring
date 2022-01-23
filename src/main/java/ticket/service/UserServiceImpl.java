@@ -85,10 +85,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity login(String id, String pwd) {
         UserEntity userEntity = userRepository.findById(id);
-        System.out.println(userEntity);
+        if (userEntity == null) {
+            return null;
+        }
         if (userEntity.getCrypted_pwd().equals(pwd+"123")){
+            System.out.println("encodeSuc");
             return userEntity;
         } else {
+            System.out.println("encodeFail");
             return null;
         }
 

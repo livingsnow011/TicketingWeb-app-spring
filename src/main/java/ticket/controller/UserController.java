@@ -86,7 +86,7 @@ public class UserController {
 
         UserEntity userEntity = userService.login(requestLogin.getId(), requestLogin.getPwd());
         if (userEntity == null) {
-            return null;
+            return "fail";
         }
         Cookie userIdCookie = new Cookie("userId", String.valueOf(userEntity.getUserId()));
         response.addCookie(userIdCookie);
@@ -102,12 +102,12 @@ public class UserController {
         //return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/logoutt")
     public String logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("userId", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        return "redirect:/";
+        return "redirect:http://localhost:8080/";
     }
 
 }

@@ -18,6 +18,4 @@ public interface UserService {
     void deleteUser(long userId) throws Exception;
 
     UserEntity login(String id, String pwd);
-
-
 }
