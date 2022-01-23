@@ -13,7 +13,7 @@ public class UserDTO {
 
     private Long userId;
     private String crypted_pwd;
-    private LocalDateTime created_date;
+    private LocalDate created_date;
     private Integer current_point;
     private String role;
 }

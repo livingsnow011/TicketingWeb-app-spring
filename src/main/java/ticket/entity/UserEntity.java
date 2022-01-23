@@ -2,6 +2,7 @@ package ticket.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,6 +30,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String crypted_pwd;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDate created_date = LocalDate.now();
 
