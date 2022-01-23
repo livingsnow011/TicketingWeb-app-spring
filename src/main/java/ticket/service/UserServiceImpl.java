@@ -6,14 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ticket.entity.RequestLogin;
-import ticket.entity.UserDTO;
+import ticket.dto.UserDTO;
 import ticket.entity.UserEntity;
 import ticket.repository.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService{

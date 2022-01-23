@@ -1,7 +1,6 @@
 package ticket.service;
 
-import ticket.entity.RequestLogin;
-import ticket.entity.UserDTO;
+import ticket.dto.UserDTO;
 import ticket.entity.UserEntity;
 
 public interface UserService {

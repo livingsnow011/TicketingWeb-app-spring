@@ -1,4 +1,4 @@
-package ticket.entity;
+package ticket.dto;
 
 import lombok.Data;
 

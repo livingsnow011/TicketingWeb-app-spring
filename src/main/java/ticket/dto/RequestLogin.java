@@ -1,10 +1,9 @@
-package ticket.entity;
+package ticket.dto;
 
 import lombok.Data;
 
 @Data
-public class RequestUser {
+public class RequestLogin {
     private String id;
-    private String name;
     private String pwd;
 }

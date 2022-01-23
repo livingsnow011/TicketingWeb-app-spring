@@ -31,6 +31,13 @@
         <br />
         <input id="pwInput" type="password" placeholder="Password" />
       </div>
+      <div>
+        <label for="pw2Input" style="font-weight: bold"
+        >비밀번호 확인</label
+        >
+        <br />
+        <input id="pw2Input" type="password" placeholder="Password" />
+      </div>
       <br />
       <button class="btn btn-primary" id="loginButton" type="button">
         등록하기
@@ -51,6 +58,7 @@
   const idInput = document.getElementById("idInput");
   const loginButton = document.getElementById("loginButton");
   const pwInput = document.getElementById("pwInput");
+  const pw2Input = document.getElementById("pw2Input");
   const nameInput = document.getElementById("nameInput");
 
   init();
@@ -60,8 +68,19 @@
     addEventListener();
   }
 
-  function validation(name, id, pw) {
-    console.log(name, id, pw);
+  function validation(name, id, pw, pw2) {
+    if (name === "") {
+      return false;
+    }
+    if (id === "") {
+      return false;
+    }
+    if (pw === "") {
+      return false;
+    }
+    if (pw !== pw2) {
+      return false;
+    }
     return true;
   }
 
@@ -70,11 +89,12 @@
       const name = nameInput.value;
       const id = idInput.value;
       const pw = pwInput.value;
+      const pw2 = pw2Input.value;
 
-      if (validation(name, id, pw)) {
+      if (validation(name, id, pw, pw2)) {
         signup(name, id, pw);
       } else {
-        alert("유효하지 않은 아이디 비밀번호입니다.");
+        alert("유효하지 않은 입력양식 입니다.");
       }
     });
   }
@@ -88,7 +108,7 @@
             })
             .then((result) => {
               console.log(result);
-              window.location.href = 'http://localhost:8080/';
+              window.location.href = "http://localhost:8080/";
             })
             .catch((e) => {
               console.error(e);

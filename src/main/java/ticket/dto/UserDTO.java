@@ -1,4 +1,4 @@
-package ticket.entity;
+package ticket.dto;
 
 import lombok.Data;
 
@@ -13,7 +13,7 @@ public class UserDTO {
 
     private Long userId;
     private String crypted_pwd;
-    private LocalDate created_date;
+    private LocalDateTime created_date;
     private Integer current_point;
     private String role;
 }
