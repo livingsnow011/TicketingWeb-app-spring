@@ -43,15 +43,15 @@
                     <span id="price" class="display-5 fw-bold text-right">가격 : 0 원</span>
                 </div>
                 <hr/>
-                <button type="button" class="w-100 btn col-md-2 btn-primary"><h1>예매</h1></button>
+                <button type="button" id="reservation" class="w-100 btn col-md-2 btn-primary" onclick="reserve()"><h1>예매</h1></button>
             </form>
         </div>
     </div>
 
     <footer th:replace="./fragment/footer :: footer"></footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/js/reservation.js"></script>
+    <div th:replace="./fragment/scripts :: script"></div>
+    <script src="/js/js_cookie.min.js"></script>
     <script th:inline="javascript">
         var jsSeatsList =[[${seats}]];
         var seatId;
@@ -93,7 +93,6 @@
         function gradeSelect() {
             var gradeSelected = document.getElementById("selectgrade");
             gradeValue = gradeSelected.options[gradeSelected.selectedIndex].value;
-            console.log(gradeValue);
 
             if(gradeValue === "0") {
                 isGradeSelected = false;
@@ -115,6 +114,27 @@
                 isGradeSelected=true;
             }
 
+        }
+
+        function reserve() {
+            var uid = Cookies.get('userId');
+
+            var data = {
+                userId: uid,
+                seatId: seatId,
+            }
+
+            $.ajax({
+              type: 'POST',
+              url: '/api/v1/ticketing',
+              contentType: 'application/json; charset=utf-8',
+              data: JSON.stringify(data)
+            }).done(function(response){
+              alert(response);
+              window.history.back();
+            }).fail(function(err){
+              alert(err.responseText);
+            });
         }
 
     </script>

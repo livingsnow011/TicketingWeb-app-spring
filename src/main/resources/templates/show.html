@@ -20,7 +20,7 @@
                 <div class="card-body">
                   <h5 th:text="${show.name}"class="card-title text-start">${show.name}</h5>
                   <p th:text="${show.description}" class="card-text text-start">${show.description}</p>
-                  <a th:href="@{/test/ticketing(showId=${show.id})}">
+                  <a th:href="@{/ticketing(showId=${show.id})}">
                     <button type="button" class="w-100 btn btn-lg btn-outline-primary">예매하기</button>
                   </a>
                 </div>
