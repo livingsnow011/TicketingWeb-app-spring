@@ -31,17 +31,16 @@
 </header>
 
 <div class="container col-8" id="userInfo">
-    <div class="d-grid gap-2 d-md-flex justify-content-end mt-2">
-        <a href="/registerShow"><button class="btn btn-primary" type="button">공연등록</button></a>
-        <a href="#"><button class="btn btn-primary" type="button">회원관리</button></a>
+    <div class="d-grid gap-2 d-md-flex justify-content-end my-2">
+        <a th:if="${user.role} == 'admin'" href="/show/register"><button class="btn btn-primary" type="button">공연등록</button></a>
+        <a th:if="${user.role} == 'admin'" href="/admin/users"><button class="btn btn-primary" type="button">회원관리</button></a>
         <button class="btn btn-danger" type="button" id="delete">회원탈퇴</button>
     </div>
     <div class="row"><h2 class="text-center"><strong>회원 정보</strong></h2></div>
-    <input type="hidden" id="uid" name="uid" value="1">
     <div class="container">
-        <div class="row" id="userId">아이디 : </div>
-        <div class="row" id="userCreatedDate">가입일 : </div>
-        <div class="row" id="userCurrentPoint">잔여 포인트 : </div>
+        <div class="row" id="userId">아이디 : <div th:text="${user.id}"></div></div>
+        <div class="row" id="userCreatedDate">가입일 : <div th:text="${user.created_date}"></div></div>
+        <div class="row" id="userCurrentPoint">잔여 포인트 : <div th:text="${user.current_point}"></div></div>
 
         <br>
 
@@ -54,30 +53,22 @@
             <table class="table table-hover table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">공연제목</th>
+                    <th scope="col">공연시간</th>
+                    <th scope="col">등급</th>
+                    <th scope="col">가격</th>
+                    <th scope="col">예매시간</th>
+                    <th scope="col">상태</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry the Bird</td>
-                    <td>Player</td>
-                    <td>@twitter</td>
+                <tr th:if="${#lists.size(logs)} > 0" th:each="log : ${logs}">
+                    <td th:text="${log.showName}"></td>
+                    <td th:text="${log.seat.showDate}"></td>
+                    <td th:text="${log.seat.grade}"></td>
+                    <td th:text="${log.seat.price}"></td>
+                    <td th:text="${log.createdTime}"></td>
+                    <td th:text="${log.refunded} ? '환불됨' : (${log.success} ? '당첨' : '대기')"></td>
                 </tr>
                 </tbody>
             </table>
@@ -103,6 +94,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="/js/js_cookie.min.js"></script>
 <script src="/js/myPage.js"></script>
 </body>
 </html>

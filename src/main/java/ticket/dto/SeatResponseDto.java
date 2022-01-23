@@ -12,6 +12,7 @@ public class SeatResponseDto {
     private Long id;
     private Long showInfoId;
     private LocalDateTime showDate;
+    private String showName;
     private String grade;
     private int price;
     private int totalSeat;
@@ -20,6 +21,7 @@ public class SeatResponseDto {
     public SeatResponseDto(Seat seat) {
         this.id = seat.getId();
         this.showInfoId = seat.getShowInfo().getId();
+        this.showName = seat.getShowName();
         this.showDate = seat.getShowDate();
         this.grade = seat.getGrade();
         this.price = seat.getPrice();

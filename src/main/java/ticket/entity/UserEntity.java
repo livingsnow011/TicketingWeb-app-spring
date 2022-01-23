@@ -2,8 +2,11 @@ package ticket.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,12 +33,13 @@ public class UserEntity {
     private String crypted_pwd;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDate created_date = LocalDate.now();
 
-    @Column(columnDefinition = "integer default 0")
+    @ColumnDefault("1000000")
     private Integer current_point;
 
-    @Column(columnDefinition = "varchar(255) default 'user'")
+    @ColumnDefault("'user'")
     private String role;
 
     /*

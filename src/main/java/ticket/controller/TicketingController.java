@@ -78,9 +78,9 @@ public class TicketingController {
 
     // 추첨 메소드
 //    테스트용 크론탭
-    @Scheduled(cron = "0/15 * * * * *")
+//    @Scheduled(cron = "0/15 * * * * *")
 //    실제 사용할 크론탭
-//    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public String draw() {
         // 공연 시작까지 얼마 안남은 공연 id를 받아온다
         // 몇 시간 전부터 추첨을 돌릴지는 Seat repo에 쿼리로 설정
@@ -103,9 +103,9 @@ public class TicketingController {
 
     // 환불 메소드
 //    테스트용 크론탭
-    @Scheduled(cron = "0/15 * * * * *")
+//    @Scheduled(cron = "0/15 * * * * *")
 //    실제 사용할 크론탭
-//    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public String refund() throws Exception{
         // 공연 시작이 지난 좌석 정보를 찾아온다
         List<Seat> lotteryTargetList = showAndSeatService.findLotteryTarget();

@@ -15,12 +15,15 @@ public class LogResponseDto {
     private String showName;
     private LocalDateTime createdTime;
     private boolean success;
+    private boolean refunded;
 
     public LogResponseDto(TicketingLog log) {
         this.id = log.getId();
         this.userId = log.getUserId();
         this.seat = new SeatResponseDto(log.getSeat());
+        this.showName = log.getSeat().getShowName();
         this.createdTime = LocalDateTime.now();
         this.success = log.isSuccess();
+        this.refunded = log.isRefunded();
     }
 }

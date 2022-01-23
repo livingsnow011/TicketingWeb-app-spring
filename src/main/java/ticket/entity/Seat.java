@@ -20,6 +20,8 @@ public class Seat {
     @JoinColumn(name="show_info_id")
     private ShowInfo showInfo;
 
+    private String showName;
+
     @OneToMany(mappedBy = "seat", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<TicketingLog> ticketingLogList;
 
@@ -38,6 +40,7 @@ public class Seat {
     @Builder
     public Seat(ShowInfo showInfo, LocalDateTime showDate, String grade, int price, int totalSeat) {
         this.showInfo = showInfo;
+        this.showName = showInfo.getName();
         this.showDate = showDate;
         this.grade = grade;
         this.price = price;
