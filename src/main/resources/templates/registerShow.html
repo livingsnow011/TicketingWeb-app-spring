@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css">
+    <!-- <link th:href="@{/style.css}" href="style.css" rel="stylesheet"> -->
+    <title>공연 등록</title>
+</head>
+<body>
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a th:href="@{/}" href="#" class="nav-link px-2 text-white">Title</a></li>
+                <li><a href="/show/movie" class="nav-link px-2 text-white">Movie</a></li>
+                <li><a href="/show/play" class="nav-link px-2 text-white">Play</a></li>
+                <li><a href="/show/concert" class="nav-link px-2 text-white">Concert</a></li>
+            </ul>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">Login</button>
+                <button type="button" class="btn btn-warning">My-page</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container col-6">
+    <br>
+    <h2>공연 등록</h2>
+    <br>
+    <form id="showRegisterForm">
+        <label for="name">공연 제목</label>
+        <p class="col-6"><input class="form-control" type="text" id="name"/></p>
+        <label for="classification">공연 분류</label>
+        <p class="col-6"><select class="form-control" id="classification">
+            <option value="">공연 분류를 선택해주세요</option>
+            <option value="concert">콘서트</option>
+            <option value="movie">영화</option>
+            <option value="play">연극</option>
+        </select></p>
+        <div id="times" class="col-4">
+            <label for="time0">공연 시각</label>
+            <div id="times0">
+                <input class="form-control" type="datetime-local" id="time0" name="startDate"/>
+            </div>
+        </div>
+        <p class="col align-self-end"><button type="button" class="btn btn-primary" id="addTimeInput">추가</button></p>
+        <label for="seats">좌석 정보</label>
+        <div class="container" id="seats">
+            <div class="form-group row" id="seat0">
+                <input class="form-control col" type="text" id="grade0" name="grade" placeholder="좌석 등급"/>
+                <input class="form-control col" type="number" id="price0" name="price" placeholder="좌석 가격"/>
+                <input class="form-control col" type="number" id="count0" name="count" placeholder="좌석 수"/>
+            </div>
+        </div>
+            <p><button type="button" class="btn btn-primary" id="addSeatInput">추가</button></p>
+        <label for="description">공연 개요</label>
+        <p><textarea class="form-control" id="description" cols="40" rows="10" placeholder="공연 개요를 입력해주세요"></textarea></p>
+        <label for="files">포스터 이미지 업로드</label>
+        <p><input type="file" id="files" name="files" multiple="multiple"/></p>
+
+        <button type="submit" class="btn btn-success" id="btn-save">등록</button>
+    </form>
+</div>
+
+<footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <span class="text-muted">© 2021 SESAC</span>
+    </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+    </ul>
+</footer>
+
+<div th:replace="./fragment/scripts :: script"></div>
+<script src="/js/shows.js"></script>
+</body>
+</html>

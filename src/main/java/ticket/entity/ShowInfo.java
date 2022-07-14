@@ -1,0 +1,38 @@
+package ticket.entity;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Getter
+@NoArgsConstructor
+@Entity
+public class ShowInfo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String classification;
+
+    @Column(nullable = false)
+    private String name;
+
+    @OneToMany(mappedBy = "showInfo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Seat> seatList;
+
+    private String description;
+
+    private String posterURI;
+
+
+    @Builder
+    public ShowInfo(String name, String classification, String description, String posterURI) {
+        this.name = name;
+        this.classification = classification;
+        this.description = description;
+        this.posterURI = posterURI;
+    }
+}

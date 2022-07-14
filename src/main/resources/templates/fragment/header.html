@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+    <header th:fragment="header" class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a th:href="@{/}" href="#" class="nav-link px-2 text-white">Title</a></li>
+                    <li><a href="/show/movie" class="nav-link px-2 text-white">Movie</a></li>
+                    <li><a href="/show/play" class="nav-link px-2 text-white">Play</a></li>
+                    <li><a href="/show/concert" class="nav-link px-2 text-white">Concert</a></li>
+                </ul>
+
+                <div class="text-end">
+                    <a th:if="${userName == null}" href="/login.html"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+
+                    <button th:if="${userName != null}" id="logoutButton" type="button" class="btn btn-outline-light me-2">Logout</button>
+
+<!--                        유저의 아이디가 널인 경우 login 버튼-->
+<!--                        <button th:if="${user?.id}" type="button" class="btn btn-outline-light me-2">Login</button>-->
+<!--                        유저의 아이디가 널이 아닌 경우-->
+<!--                        <button th:unless="!${user?.id}" type="button" class="btn btn-outline-light me-2">Login</button>-->
+
+                    <a th:if="${userName != null}" href="/mypage"><button type="button" class="btn btn-warning">My-page</button></a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+</html>
