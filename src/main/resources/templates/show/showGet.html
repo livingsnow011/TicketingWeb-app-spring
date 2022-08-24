@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      layout:decorate="~{layouts/layout}">
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        *{box-sizing: border-box;}
+
+        .show-form{
+            width: 70%;
+            margin: 2rem auto;
+        }
+
+        .form{
+            height: border-box;
+            text-align: center;
+        }
+
+        .page-item{
+            cursor: pointer;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+    function page(page){
+        location.href="/show/"+[[${classification}]]+"/"+page;
+    }
+    </script>
+</th:block>
+
+
+<div layout:fragment="content" class="show-form">
+    <h3>[[${classification}]] ( [[${total}]] )</h3>
+    <hr>
+
+    <!--    검색 기능도 나중에 도전     -->
+    <form th:action="@{'/show/'+${classification}+'/'+${shows.number}}" role="form" method="get" th:object="${shows}" class="form">
+
+        <div class="row row-cols-1 row-cols-md-3 mb-3">
+            <div th:each="show, status:${shows.getContent()}">
+                <div class="col mb-4">
+                <div class="card  h-100">
+                    <img th:src="${show.imgUrl}" class="card-img-top" alt="${show.showName}" style="width:100%; height: 15rem;">
+                    <div class="card-body">
+                        <h5 th:text="${show.showName}"class="card-title">Card title</h5>
+                        <!--공연 상세가 들어가는게 더 나을 듯 ...으로 처리-->
+                        <a th:href="@{'/show/detail/'+${show.id}}">
+                            <button type="button" class="btn btn-primary btn-block">예매하기</button>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">[[${show.showSellStatus}]]</small>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:with="start=${(shows.number/maxPage)*maxPage + 1}, end=(${(shows.totalPages == 0) ? 1 : (start + (maxPage - 1) < shows.totalPages ? start + (maxPage - 1) : shows.totalPages)})" >
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item" th:classappend="${shows.first}?'disabled'">
+                    <a th:onclick="'javascript:page(' + ${shows.number - 1} + ')'" aria-label='Previous' class="page-link">
+                        <span aria-hidden='true'>Previous</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${shows.number eq page-1}?'active':''">
+                    <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                </li>
+
+                <li class="page-item" th:classappend="${shows.last}?'disabled'">
+                    <a th:onclick="'javascript:page(' + ${shows.number + 1} + ')'" aria-label='Next' class="page-link">
+                        <span aria-hidden='true'>Next</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </form>
+</div>
+</html>

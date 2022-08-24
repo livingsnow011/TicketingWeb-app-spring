@@ -5,16 +5,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ticket.entity.Show;
-import ticket.entity.ShowDate;
+import ticket.entity.ShowSeat;
 
 import java.util.List;
 
-public interface ShowDateRepository extends JpaRepository<ShowDate,Long> {
-    List<ShowDate> findByShowIdOrderByShowDateAsc(Long showId);
+public interface ShowSeatRepository extends JpaRepository<ShowSeat,Long> {
+    List<ShowSeat> findByShowIdOrderByIdAsc(Long showId);
 
-    List<ShowDate> findByShowId(Long showId);
+    List<ShowSeat> findByShowId(Long showId);
 
     @Modifying
-    @Query("delete from ShowDate sd where sd.show=:show")
+    @Query("delete from ShowSeat ss where ss.show=:show")
     void deleteAllByShowIdInQuery(@Param("show") Show show);
 }

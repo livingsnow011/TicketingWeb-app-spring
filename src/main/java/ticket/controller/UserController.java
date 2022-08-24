@@ -1,117 +1,60 @@
 package ticket.controller;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import ticket.dto.RequestLogin;
-import ticket.dto.RequestUser;
-import ticket.dto.ResponseUser;
-import ticket.dto.UserDTO;
-import ticket.entity.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ticket.dto.SignUpFormDto;
+import ticket.entity.User;
 import ticket.service.UserService;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 
-@RestController
+@RequiredArgsConstructor
+@RequestMapping("/users")
+@Controller
 public class UserController {
-    @Autowired
-    UserService userService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<ResponseUser>> getUsers() {
-        Iterable<UserEntity> userEntityList = userService.getUsersByAll();
-        List<ResponseUser> responseUserList = new ArrayList<>();
-        userEntityList.forEach(listItem -> {
-            responseUserList.add(new ModelMapper().map(listItem, ResponseUser.class));
-        });
-        return ResponseEntity.status(HttpStatus.OK).body(responseUserList);
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
+    @GetMapping(value="/new")
+    public String signUpForm(Model model){
+        model.addAttribute("signUpFormDto",new SignUpFormDto());
+        return "user/userForm";
     }
 
+    @PostMapping(value = "/new")
+    public String signUpForm(@Valid SignUpFormDto signUpFormDto, BindingResult bindingResult,Model model){
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<ResponseUser> getUsers(@PathVariable("userId") Long userId) {
-        UserDTO userDTO = userService.getUsersByUserId(userId);
-        ResponseUser responseUser = new ModelMapper().map(userDTO, ResponseUser.class);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
-    }
-
-    @GetMapping("/users/searchId/{id}")
-    public ResponseEntity<ResponseUser> getUsers(@PathVariable("id") String id) {
-        UserDTO userDTO = userService.getUsersById(id);
-        System.out.println(userDTO);
-        ResponseUser responseUser = new ModelMapper().map(userDTO, ResponseUser.class);
-        System.out.println(responseUser);
-        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
-    }
-
-
-    @PostMapping("/users")
-    public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) throws Exception {
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-        UserDTO userDTO = userService.saveUser(mapper.map(user, UserDTO.class));
-
-        ResponseUser responseUser = mapper.map(userDTO, ResponseUser.class);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
-    }
-
-
-    @DeleteMapping("/users/{userId}")
-    public Long deleteUser(@PathVariable("userId") Long userId) throws Exception {
-        userService.deleteUser(userId);
-        return userId;
-    }
-
-    @PatchMapping("/users/{userId}")
-    public ResponseEntity<ResponseUser> changeUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-        UserDTO responseDTO = userService.changeUser(userId, userDTO);
-
-        ResponseUser responseUser = mapper.map(responseDTO, ResponseUser.class);
-        return ResponseEntity.status(HttpStatus.OK).body(responseUser);
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestBody RequestLogin requestLogin, HttpServletResponse response, @CookieValue(name = "userId", required = false) Long userId) {
-        //ResponseEntity<ResponseUser> login(@RequestBody RequestLogin requestLogin, HttpServletResponse response, @CookieValue(name = "userId", required = false) Long userId) {
-        if (userId != null) {
-            return "redirect:http://localhost:8080/";
+        if(bindingResult.hasErrors()){
+            return "user/userForm";
         }
 
-        UserEntity userEntity = userService.login(requestLogin.getId(), requestLogin.getPwd());
-        if (userEntity == null) {
-            return "fail";
+        try{
+            User user = User.createUser(signUpFormDto, passwordEncoder);
+            userService.saveUser(user);
+        } catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "user/userForm";
         }
-        Cookie userIdCookie = new Cookie("userId", String.valueOf(userEntity.getUserId()));
-        response.addCookie(userIdCookie);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Set-Cookie", "userId" + String.valueOf(userEntity.getUserId()));
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.COOKIE, "userId" + "=" + userEntity.getUserId());
-//        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
-        ModelMapper mapper = new ModelMapper();
-        ResponseUser responseUser = mapper.map(userEntity, ResponseUser.class);
-        return "redirect:http://localhost:8080/";
-        //return ResponseEntity.status(HttpStatus.OK).body(responseUser);
+
+        return "redirect:/";
     }
 
-    @PostMapping("/logoutt")
-    public String logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie("userId", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        return "redirect:http://localhost:8080/";
+    @GetMapping(value="/login")
+    public String loginUser(){
+        return "user/loginForm";
     }
 
+    @GetMapping(value="/login/error")
+    public String loginError(Model model){
+        model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
+        return "/user/loginForm";
+    }
 }

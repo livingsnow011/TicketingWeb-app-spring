@@ -1,21 +1,9 @@
 package ticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import ticket.entity.UserEntity;
+import ticket.entity.User;
 
-@Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<User,Long> {
 
-    UserEntity findByUserId(Long userId);
-
-    UserEntity findById(String id);
-
-    UserEntity findByName(String name);
-
-    @Query("select user from UserEntity user where user.id = :id")
-    UserEntity findByMyId(@Param("id") String id);
+    User findByUserId(String userId);
 }

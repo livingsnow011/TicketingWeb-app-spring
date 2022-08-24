@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      layout:decorate="~{layouts/layout}">
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script defer th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+
+
+        let dateIdNum = 0;
+        let dateCount = 4;
+        function plusDate(){
+            const dateFormGroup = document.getElementById('date-form-group');
+            const dateFormNode = document.getElementById('date-form');
+            const dateCloneNode = dateFormNode.cloneNode(true);
+
+            if(dateCount<1){
+                alert("공연 날짜는 5개까지 추가 가능합니다.");
+                return;
+            }
+
+            dateIdNum++;
+            dateCloneNode.id = 'copyNode'+dateIdNum;
+            dateCloneNode.children[1].value=null;
+            dateFormGroup.append(dateCloneNode);
+            dateCount--;
+        }
+
+        let imgIdNum = 0;
+        let imgCount = 4;
+        function plusImg(){
+            const imgFormGroup = document.getElementById('img-form-group');
+            const imgFormNode = document.getElementById('img-form');
+            const imgCloneNode = imgFormNode.cloneNode(true);
+            if(imgCount<1){
+                alert("이미지는 5개까지 추가 가능합니다.");
+                return;
+            }
+
+            imgIdNum++;
+            imgCloneNode.id = 'copyNode'+imgIdNum;
+            imgCloneNode.children[0].value=null;
+            imgCloneNode.children[1].innerHTML="상품이미지";
+            imgFormGroup.append(imgCloneNode);
+            imgCount--;
+        }
+        let seatIdNum = 0;
+        let seatCount = 4;
+        function plusSeat(){
+            const seatFormGroup = document.getElementById('seat-form-group');
+            const seatFormNode = document.getElementById('seat-form');
+            const seatCloneNode = seatFormNode.cloneNode(true);
+            if(seatCount<1){
+                alert("좌석 등급은 5개까지 추가 가능합니다.");
+                return;
+            }
+
+            seatIdNum++;
+            seatCloneNode.id = 'copyNode'+seatIdNum;
+            seatCloneNode.children[1].value=null;
+            seatCloneNode.children[4].value=null;
+            seatCloneNode.children[7].value=null;
+            seatFormGroup.append(seatCloneNode);
+            seatCount--;
+        } 
+
+        $(document).on("change",".custom-file-input",function(){
+            var fileName = $(this).val().split("\\").pop();  //이미지 파일명
+            var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 추출
+            fileExt = fileExt.toLowerCase(); //소문자 변환
+
+            if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
+                alert("이미지 파일만 등록이 가능합니다.");
+                return;
+            }
+
+            $(this).siblings(".custom-file-label").html(fileName);
+        });
+
+    </script>
+
+</th:block>
+
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        .input-group {
+            margin-bottom : 15px
+        }
+        .img-div {
+            margin-bottom : 10px
+        }
+        .fieldError {
+            color: #bd2130;
+        }
+
+        *{box-sizing: border-box;}
+
+        .show-form{
+            width: 70%;
+            margin: 2rem auto;
+        }
+
+    </style>
+</th:block>
+
+<div layout:fragment="content" class="show-form">
+    <form class="container" role="form" method="post" enctype="multipart/form-data" th:object="${showFormDto}">
+
+        <p class="h2 row col-12">
+            공연 등록
+        </p>
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="form-group row col-12">
+            <select th:field="*{showSellStatus}" class="custom-select">
+                <option value="SELL">판매중</option>
+                <option value="SOLD_OUT">품절</option>
+            </select>
+        </div>
+
+        <div class="input-group row col-12">
+            <div class="input-group-prepend">
+                <span class="input-group-text">공연 이름</span>
+            </div>
+            <input type="text" th:field="*{showName}" class="form-control" placeholder="공연 이름을 입력해주세요">
+        </div>
+        <p th:if="${#fields.hasErrors('showName')}" th:errors="*{showName}" class="fieldError">Incorrect data</p>
+        
+        <div class="form-group row col-12">
+            <select th:field="*{classification}" class="custom-select">
+                <option value="MOVIE">영화</option>
+                <option value="PLAY">연극</option>
+                <option value="CONCERT">콘서트</option>
+            </select>
+        </div>
+
+        <div class="input-group row col-12">
+            <div class="input-group-prepend">
+                <span class="input-group-text">공연 상세 내용</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" th:field="*{showDetail}"></textarea>
+        </div>
+        <p th:if="${#fields.hasErrors('showDetail')}" th:errors="*{showDetail}" class="fieldError">Incorrect data</p>
+
+        <!-- 공연 날짜 등록 -->
+        <!-- 신규 등록 -->
+        <div th:if="${#lists.isEmpty(showFormDto.showDateDtoList)}">
+            <div id="date-form-group" class="row col-12">
+                <div class="input-group" id="date-form">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">공연 날짜</span>
+                    </div>
+                    <input type="datetime-local"  class="form-control" placeholder="공연 날짜를 선택해주세요" name="showDate">
+                </div>
+            </div>
+            <div class="row col-12">
+                <button type="button" id="date-button"  class="btn btn-secondary mt-2 mb-3 col-12" onclick="plusDate()">공연 날짜 추가</button>
+            </div>
+        </div>
+
+        <!-- 수정  -->
+        <div th:if = "${not #lists.isEmpty(showFormDto.showDateDtoList)}">
+            <div class="date-form-group row col-12" th:each="showDateDto, status: ${showFormDto.showDateDtoList}">
+                <div class="input-group date-form">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">공연 날짜</span>
+                    </div>
+                    <input type="datetime-local"  class="form-control" placeholder="공연 날짜를 선택해주세요" name="showDate" th:value="${showDateDto.showDate}">
+                    <input type="hidden" name="showDateIds" th:value="${showDateDto.id}">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 공연 좌석 등록-->
+        <!-- 신규 등록 -->
+        <div th:if="${#lists.isEmpty(showFormDto.showSeatDtoList)}">
+            <div id="seat-form-group">
+                <div class="input-group row col-12" id="seat-form">
+
+                    <div class="input-group-prepend mb-1">
+                        <span class="input-group-text">좌석 등급</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="좌석 등급을 입력해주세요" name="seatGrade">
+
+                    <div class="w-100"></div>
+
+                    <div class="input-group-prepend mb-1">
+                        <span class="input-group-text">좌석 수</span>
+                    </div>
+                    <input type="number"  class="form-control" placeholder="좌석 수를 입력해주세요" name="seatCount">
+
+                    <div class="w-100"></div>
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">가격</span>
+                    </div>
+                    <input type="number" name="price" class="form-control" placeholder="좌석 등급의 가격을 입력해주세요">
+                </div>
+            </div>
+            <div class="row col-12">
+                <button type="button" id="seat-button"  class="btn btn-secondary btn-block mt-2 mb-3" onclick="plusSeat()">좌석 등급 추가</button>
+            </div>
+        </div>
+
+
+        <!-- 수정 -->
+        <div th:if = "${not #lists.isEmpty(showFormDto.showSeatDtoList)}">
+            <div class="form-group" th:each="showSeatDto, status: ${showFormDto.showSeatDtoList}">
+
+                <div class="seat-form-group">
+                    <div class="input-group row col-12 seat-form">
+    
+                        <div class="input-group-prepend mb-1">
+                            <span class="input-group-text">좌석 등급</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="좌석 등급을 입력해주세요" name="seatGrade" th:value="${showSeatDto.seatGrade}">
+    
+                        <div class="w-100"></div>
+    
+                        <div class="input-group-prepend mb-1">
+                            <span class="input-group-text">좌석 수</span>
+                        </div>
+                        <input type="number"  class="form-control" placeholder="좌석 수를 입력해주세요" name="seatCount" th:value="${showSeatDto.seatCount}">
+    
+                        <div class="w-100"></div>
+    
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">가격</span>
+                        </div>
+                        <input type="number" name="price" class="form-control" placeholder="좌석 등급의 가격을 입력해주세요" th:value="${showSeatDto.price}">
+                        <input type="hidden" name="showSeatIds" th:value="${showSeatDto.id}">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--공연 이미지 등록-->
+        <!-- 신규 등록 -->
+        <div th:if="${#lists.isEmpty(showFormDto.showImgDtoList)}">
+            <div class="form-group row col-12" id="img-form-group">
+                <div class="custom-file img-div" id="img-form">
+                    <input type="file" class="custom-file-input" name="showImgFile">
+                    <label class="custom-file-label" th:text="상품이미지"></label>
+                </div>
+            </div>
+            <div class="row col-12">
+                <button type="button" id="img-button"  class="btn btn-secondary btn-block" onclick="plusImg()">이미지 추가</button>
+            </div>
+        </div>
+
+        <!-- 수정  -->
+        <div th:if = "${not #lists.isEmpty(showFormDto.showImgDtoList)}">
+            <div class="form-group row col-12" th:each="showImgDto, status: ${showFormDto.showImgDtoList}">
+                <div class="custom-file img-div">
+                    <input type="file" class="custom-file-input" name="showImgFile">
+                    <input type="hidden" name="showImgIds" th:value="${showImgDto.id}">
+                    <label class="custom-file-label" th:text="${not #strings.isEmpty(showImgDto.oriImgName)} ? ${showImgDto.oriImgName} : '상품이미지' + ${status.index+1}"></label>
+                </div>
+            </div>
+        </div>
+
+        <!--버튼-->
+        <div th:if="${#strings.isEmpty(showFormDto.id)}" style="text-align: center">
+            <button th:formaction="@{/admin/show/new}" type="submit" class="btn btn-primary mt-2">저장</button>
+        </div>
+        <div th:unless="${#strings.isEmpty(showFormDto.id)}" style="text-align: center">
+            <button th:formaction="@{'/admin/show/' + ${showFormDto.id} }" type="submit" class="btn btn-primary mt-2">수정</button>
+        </div>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+
+</div>
+
+</html>

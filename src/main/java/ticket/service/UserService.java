@@ -1,20 +1,47 @@
 package ticket.service;
 
-import ticket.dto.UserDTO;
-import ticket.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ticket.entity.User;
+import ticket.repository.UserRepository;
 
-public interface UserService {
-    UserDTO saveUser(UserDTO userDTO) throws Exception;
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class UserService implements UserDetailsService {
 
-    UserDTO changeUser(Long userId, UserDTO userDTO) throws Exception;
+    private final UserRepository userRepository;
 
-    UserDTO getUsersByUserId(Long userId);
+    public User saveUser(User user){
+        validateDuplicateUser(user);
+        return userRepository.save(user);
+    }
 
-    UserDTO getUsersById(String id);
+    //유저 아이디 중복 검사
+    private void validateDuplicateUser(User user){
+        User findUser = userRepository.findByUserId(user.getUserId());
+        if(findUser!=null){
+            throw new IllegalStateException("중복된 아이디가 있습니다.");
+        }
+    }
 
-    Iterable<UserEntity> getUsersByAll();
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        User user = userRepository.findByUserId(userId);
 
-    void deleteUser(long userId) throws Exception;
+        if(user == null){
+            throw new UsernameNotFoundException(userId);
+        }
 
-    UserEntity login(String id, String pwd);
+        //이럴줄 몰랐음....
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUserId())
+                .password(user.getPassword())
+                .roles(user.getRole().toString())
+                .build();
+    }
 }
