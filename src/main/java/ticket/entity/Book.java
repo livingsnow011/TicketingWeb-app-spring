@@ -1,5 +1,6 @@
 package ticket.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ticket.constant.BookStatus;
@@ -45,4 +46,21 @@ public class Book {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Builder
+    Book(User user,LocalDateTime bookDate,BookStatus bookStatus,List<Ticket> tickets){
+        this.user = user;
+        this.bookDate = bookDate;
+        this.bookStatus = bookStatus;
+        for(Ticket ticket : tickets){
+            addTicket(ticket);
+        }
+    }
+
+    public void addTicket(Ticket ticket){
+        tickets.add(ticket);
+        ticket.setBook(this);
+    }
+
+
 }

@@ -35,4 +35,8 @@ public class Ticket {
         this.showSeat = showSeat;
     }
 
+    public void setBook(Book book){
+        this.book = book;
+    }
+
 }
