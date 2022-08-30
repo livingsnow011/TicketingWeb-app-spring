@@ -32,4 +32,6 @@ public interface ShowImgRepository extends JpaRepository<ShowImg,Long> {
             "from ShowImg i join i.show s " +
             "where i.repImgYn='Y' order by s.id desc")
     Page<ShowGetDto> findAllShow(Pageable pageable);
+
+    ShowImg findByShowIdAndRepImgYn(Long showId, String repImgYn);
 }

@@ -2,6 +2,7 @@ package ticket.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,9 @@ public class BookService {
     private final ShowSeatRepository showSeatRepository;
     private final ShowDateRepository showDateRepository;
     private final UserRepository userRepository;
+    private final TicketRepository ticketRepository;
     private final BookRepository bookRepository;
+    private final ShowImgRepository showImgRepository;
 
     public Long book(BookDto bookDto, String userId){
         ShowSeat showSeat = showSeatRepository.findById(bookDto.getSeatId()).
@@ -51,17 +54,27 @@ public class BookService {
         return book.getId();
     }
 
-//    @Transactional(readOnly = true)
-//    public Page<BookHistDto> getBookList(String userId, Pageable pageable){
-//
-//        List<Book> bookList = bookRepository.findBooks(userId, pageable);
-//        Long totalCount = bookRepository.countBook(userId);
-//
-//        List<BookHistDto> bookHistDtoList = new ArrayList<>();
-//
-//        for(Book book : bookList){
-//
-//        }
-//    }
+    @Transactional(readOnly = true)
+    public Page<BookHistDto> getBookList(String userId, Pageable pageable){
+
+        List<Book> bookList = bookRepository.findBooks(userId, pageable);
+        Long totalCount = bookRepository.countBook(userId);
+
+        List<BookHistDto> bookHistDtoList = new ArrayList<>();
+
+        for(Book book : bookList){
+            BookHistDto bookHistDto = new BookHistDto(book);
+            List<Ticket> ticketList = book.getTickets();
+            for (Ticket ticket : ticketList){
+                ShowImg showImg = showImgRepository.findByShowIdAndRepImgYn(1L,"Y");
+                TicketDto ticketDto = new TicketDto(ticket, showImg.getImgUrl());
+                bookHistDto.addTicketDto(ticketDto);
+            }
+
+            bookHistDtoList.add(bookHistDto);
+        }
+
+        return new PageImpl<BookHistDto>(bookHistDtoList, pageable, totalCount);
+    }
 
 }
