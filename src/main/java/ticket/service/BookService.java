@@ -66,7 +66,7 @@ public class BookService {
             BookHistDto bookHistDto = new BookHistDto(book);
             List<Ticket> ticketList = book.getTickets();
             for (Ticket ticket : ticketList){
-                ShowImg showImg = showImgRepository.findByShowIdAndRepImgYn(1L,"Y");
+                ShowImg showImg = showImgRepository.findByShowIdAndRepImgYn(ticketRepository.findShowIdByTicketId(ticket.getId()),"Y");
                 TicketDto ticketDto = new TicketDto(ticket, showImg.getImgUrl());
                 bookHistDto.addTicketDto(ticketDto);
             }

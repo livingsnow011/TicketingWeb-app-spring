@@ -26,40 +26,60 @@
         }
         .repImg{
             width:100%;
-            height:400px;
+            height:300px;
         }
         .wd50{
             height:auto;
             width:50%;
         }
+        .show-form{
+            width: 70%;
+            margin: 2rem auto;
+        }
     </style>
 </th:block>
 
-<div layout:fragment="content" class="container" style="padding: 3rem;">
+<div layout:fragment="content" class="show-form">
 
-    <h2 class="mb-4">
-        예매 이력
-    </h2>
+    <h3>사용자 정보</h3>
+    <hr/>
+    <div class="card d-flex mb-3" style="text-align: center;">
+        <div class="align-self-center w-75" style="text-align: center;">
+            <span th:text="'아이디 : ' + ${user.userId}" class="fs24 font-weight-bold"></span>
+            <div class="fs18 font-weight-light">
+                <span th:text="'사용자 이름 : ' + ${user.name}"></span><br/>
+                <span th:text="'현재 보유 포인트 : ' + ${user.currentPoint}"></span><br/>
+                <span th:text="'사용자 권한 : '+ ${user.role}"></span><br/>
+            </div>
+        </div>
+    </div>
+
+    <h3>예매 이력</h3>
+    <hr/>
 
     <div th:each="book : ${books.getContent()}">
 
-        <div class="d-flex mb-3 align-self-center">
-            <h4 th:text="${book.bookDate} + ' 주문' + ${book.bookStatus}"></h4>
-            <div class="ml-3">
-<!--                <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">-->
-<!--                    <button type="button" class="btn btn-outline-secondary" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>-->
-<!--                </th:block>-->
-<!--                <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">-->
-<!--                    <h4>(취소 완료)</h4>-->
-<!--                </th:block>-->
-            </div>
-        </div>
-        <div class="card d-flex">
-            <div th:each="ticket : ${book.ticketDtoList}" class="d-flex mb-3">
+<!--        <div class="d-flex my-3 align-self-center">-->
+
+<!--            <div class="ml-3">-->
+<!--&lt;!&ndash;                <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button type="button" class="btn btn-outline-secondary" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                </th:block>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <h4>(취소 완료)</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;                </th:block>&ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="card d-flex my-3">
+
+            <div th:each="ticket : ${book.ticketDtoList}" class="d-flex">
                 <div class="repImgDiv">
                     <img th:src="${ticket.imgUrl}" class = "rounded repImg" th:alt="${ticket.showName}">
                 </div>
-                <div class="align-self-center w-75">
+                <div class="align-self-center w-75" style="text-align: center;">
+                    <h4 th:text="' 주문 날짜 : ' + ${book.bookDate}"></h4>
+                    <h4 th:text="' 주문 상태 : ' + ${book.bookStatus}"></h4>
                     <span th:text="${ticket.showName}" class="fs24 font-weight-bold"></span>
                     <div class="fs18 font-weight-light">
                         <span th:text="${ticket.showDate}"></span><br/>
@@ -67,6 +87,7 @@
                         <span th:text="${ticket.price} +'원'"></span><br/>
                     </div>
                 </div>
+
             </div>
         </div>
 

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ticket.dto.UserHistDto;
 import ticket.entity.User;
 import ticket.repository.UserRepository;
 
@@ -43,5 +44,10 @@ public class UserService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getRole().toString())
                 .build();
+    }
+
+    public UserHistDto getUserHist(String userId){
+        User user = userRepository.findByUserId(userId);
+        return UserHistDto.of(user);
     }
 }

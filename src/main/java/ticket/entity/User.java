@@ -49,8 +49,8 @@ public class User {
                 userId(signUpFormDto.getId()).
                 name(signUpFormDto.getName()).
                 password(passwordEncoder.encode(signUpFormDto.getPassword())).
-                role(Role.ADMIN).
-                currentPoint(0).
+                role(Role.USER).
+                currentPoint(100000).
                 build();
 
         return user;

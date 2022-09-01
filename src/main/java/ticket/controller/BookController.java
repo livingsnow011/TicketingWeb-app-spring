@@ -13,7 +13,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ticket.dto.BookDto;
 import ticket.dto.BookHistDto;
+import ticket.dto.UserHistDto;
 import ticket.service.BookService;
+import ticket.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -25,6 +27,7 @@ import java.util.Optional;
 public class BookController {
 
     private final BookService bookService;
+    private final UserService userService;
 
     @PostMapping(value = "/book")
     public @ResponseBody ResponseEntity book(@RequestBody @Valid BookDto bookDto, BindingResult bindingResult,
@@ -57,8 +60,11 @@ public class BookController {
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
 
+        UserHistDto userHistDto = userService.getUserHist(principal.getName());
+
         Page<BookHistDto> bookHistDtoList = bookService.getBookList(principal.getName(), pageable);
 
+        model.addAttribute("user", userHistDto);
         model.addAttribute("books", bookHistDtoList);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("maxPage", 5);
