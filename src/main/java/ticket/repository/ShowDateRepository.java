@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 import ticket.entity.Show;
 import ticket.entity.ShowDate;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ShowDateRepository extends JpaRepository<ShowDate,Long> {
     List<ShowDate> findByShowIdOrderByShowDateAsc(Long showId);
@@ -17,4 +19,8 @@ public interface ShowDateRepository extends JpaRepository<ShowDate,Long> {
     @Modifying
     @Query("delete from ShowDate sd where sd.show=:show")
     void deleteAllByShowIdInQuery(@Param("show") Show show);
+
+    // 스케줄러에 사용할 쿼리
+    @Query("select sd from ShowDate sd where sd.isBooked=false and sd.showDate>:now")
+    Optional<List<ShowDate>> findShowDateByNow(@Param("now") LocalDateTime now);
 }

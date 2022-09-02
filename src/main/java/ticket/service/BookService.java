@@ -37,6 +37,7 @@ public class BookService {
                 orElseThrow(EntityNotFoundException::new);
 
         User user = userRepository.findByUserId(userId);
+        user.usePoint(showSeat.getPrice());
 
         List<Ticket> tickets = new ArrayList<>();
         Ticket ticket = Ticket.builder().showSeat(showSeat).showDate(showDate).build();

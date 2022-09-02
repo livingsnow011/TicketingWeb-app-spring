@@ -20,12 +20,15 @@ public class ShowDate {
 
     private LocalDateTime showDate;
 
+    private Boolean isBooked;
+
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "show_id")
     private Show show;
 
     @Builder
     public ShowDate(LocalDateTime showDate,Show show){
+        this.isBooked = false;
         this.showDate = showDate;
         this.show = show;
     }

@@ -59,9 +59,13 @@ public class User {
     public void usePoint(Integer showPoint){
         int point = this.currentPoint - showPoint;
         if(point<0){
-            throw new OutOfPointException("사용자의 포인트가 부족합니다. (현재 포인트 :" + this.currentPoint + ")");
+            throw new OutOfPointException("사용자의 포인트가 부족합니다. (현재 포인트 : " + this.currentPoint + ")");
         }
         this.currentPoint = point;
+    }
+
+    public void refundPoint(Integer showPoint){
+        this.currentPoint += showPoint;
     }
 
 }
