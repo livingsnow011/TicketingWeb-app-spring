@@ -7,7 +7,6 @@ import ticket.entity.Show;
 import ticket.entity.ShowSeat;
 import ticket.entity.Ticket;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
@@ -18,6 +17,5 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     //추첨에서 사용할 메서드
     @Query("select t from Ticket t where t.showDate.id=:showDateId")
-    Optional<List<Ticket>> findTicketsByShowDateId(@Param("showDateId") Long showDateId);
-
+    Optional<Long> findTicketsByShowDateId(@Param("showDateId") Long showDateId);
 }

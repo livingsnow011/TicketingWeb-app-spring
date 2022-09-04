@@ -19,7 +19,7 @@ public class ScheduleService {
     private final ShowDateRepository showDateRepository;
     private final LotteryService lotteryService;
 
-    @Scheduled(cron = "30 * * * * ?")
+    @Scheduled(cron = "10 * * * * ?")
     public void test(){
         LocalDateTime now = LocalDateTime.now();
         // 예매처리가 되지 않고, 지금보다 미래의 공연 날짜들을 모두 가져옴
