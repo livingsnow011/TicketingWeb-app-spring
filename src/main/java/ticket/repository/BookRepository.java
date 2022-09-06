@@ -23,4 +23,6 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     @Query("select b.user from Book b where b.id=:id")
     User findUserById(@Param("id") Long id);
 
+    boolean existsByShowIdAndUser(Long showId, User user);
+
 }

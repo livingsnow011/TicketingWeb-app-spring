@@ -84,7 +84,8 @@
                     <div class="fs18 font-weight-light">
                         <span th:text="${book.ticketDto.showDate}"></span><br/>
                         <span th:text="${book.ticketDto.grade} +'등급'"></span><br/>
-                        <span th:text="${book.ticketDto.price} +'원'"></span><br/>
+                        <span th:text="${book.ticketDto.price} +'원'"></span><br/><br/>
+                        <button th:if="${book.bookStatus.toString().equals('BOOKING')}" class="btn btn-danger">예매 취소</button>
                     </div>
                 </div>
 

@@ -11,6 +11,7 @@ import ticket.dto.BookDto;
 import ticket.dto.BookHistDto;
 import ticket.dto.TicketDto;
 import ticket.entity.*;
+import ticket.exception.BookOfSameShowException;
 import ticket.exception.OverOfShowDateException;
 import ticket.repository.*;
 
@@ -37,12 +38,18 @@ public class BookService {
         ShowDate showDate = showDateRepository.findById(bookDto.getDateId()).
                 orElseThrow(EntityNotFoundException::new);
 
+        Long showId = showDateRepository.findShowIdByShowDateId(bookDto.getDateId());
+
         if(showDate.getIsBooked()){
             throw new OverOfShowDateException("이미 예매가 종료된 공연입니다");
         }
 
         User user = userRepository.findByUserId(userId);
         user.usePoint(showSeat.getPrice());
+
+        if(bookRepository.existsByShowIdAndUser(showId,user)){
+            throw new BookOfSameShowException("이미 예매한 공연입니다.");
+        }
 
         Ticket ticket = Ticket.builder().showSeat(showSeat).showDate(showDate).build();
 
@@ -51,7 +58,7 @@ public class BookService {
                 bookDate(LocalDateTime.now()).
                 bookStatus(BookStatus.BOOKING).
                 ticket(ticket).
-                showId( showDateRepository.findShowIdByShowDateId(bookDto.getDateId())).
+                showId( showId).
                 build();
 
         ticket.setBook(book);
