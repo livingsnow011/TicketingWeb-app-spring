@@ -26,7 +26,7 @@ hs_err_pid*
 *.properties
 
 # 이미지 파일 무시, 진작에 했어야
-.show/
+show/
 
 .gradle
 .idea
