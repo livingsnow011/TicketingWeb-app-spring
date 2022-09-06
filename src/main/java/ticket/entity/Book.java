@@ -62,5 +62,9 @@ public class Book {
         ticket.setBook(this);
     }
 
+    public void changeBookStatus(BookStatus bookStatus){
+        this.bookStatus = bookStatus;
+    }
+
 
 }

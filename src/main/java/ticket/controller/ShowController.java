@@ -57,6 +57,7 @@ public class ShowController {
         try{
             showService.saveShow(showFormDto,showDateTimeList ,showImgFileList,seatGradeList,seatCountList,priceList);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             model.addAttribute("errorMessage", "공연 등록 중 에러 발생");
             return "show/showForm";
         }

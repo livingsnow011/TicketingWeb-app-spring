@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShowDateRepository extends JpaRepository<ShowDate,Long> {
+
+    Optional<ShowDate> findById(Long id);
+
     List<ShowDate> findByShowIdOrderByShowDateAsc(Long showId);
 
     List<ShowDate> findByShowId(Long showId);

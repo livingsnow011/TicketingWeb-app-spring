@@ -36,4 +36,6 @@ public class ShowDate {
     public void updateShowDate(LocalDateTime showDate){
         this.showDate = showDate;
     }
+
+    public void checkIsBooked(){this.isBooked=true;}
 }

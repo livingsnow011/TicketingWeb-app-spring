@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ticket.entity.Book;
+import ticket.entity.User;
 
 import java.util.List;
 
@@ -18,4 +19,8 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     @Query("select count(b) from Book b " +
             "where b.user.userId = :userId")
     Long countBook(@Param("userId") String userId);
+
+    @Query("select b.user from Book b where b.id=:id")
+    User findUserById(@Param("id") Long id);
+
 }
