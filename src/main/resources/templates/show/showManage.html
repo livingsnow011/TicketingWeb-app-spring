@@ -29,43 +29,43 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-    function page(page){
-        location.href="/admin/show/management/"+page;
-    }
-
-    $(document).ready(function(){
-    });
-
-    function deleteShow(showId){
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var token = $("meta[name='_csrf']").attr("content");
-
-        let result = confirm("공연을 삭제하시겠습니까?");
-
-
-        if(result){
-            $.ajax({
-                beforeSend: function(xhr){
-                    xhr.setRequestHeader(header, token);
-                },
-                type: 'DELETE',
-                url: '/admin/show/'+showId,
-                success : function(result,status){
-                    alert("삭제되었습니다.");
-                    location.href='/admin/show/management';
-                },
-                error : function(jqXHR, status, error){
-
-                    if(jqXHR.status == '401'){
-                        alert('로그인 후 이용해주세요');
-                        location.href = '/member/login';
-                    } else {
-                        alert(error);
-                    }
-                }
-            });
+        function page(page){
+            location.href="/admin/show/management/"+page;
         }
-    }
+
+        $(document).ready(function(){
+        });
+
+        function deleteShow(showId){
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var token = $("meta[name='_csrf']").attr("content");
+
+            let result = confirm("공연을 삭제하시겠습니까?");
+
+
+            if(result){
+                $.ajax({
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader(header, token);
+                    },
+                    type: 'DELETE',
+                    url: '/admin/show/'+showId,
+                    success : function(result,status){
+                        alert("삭제되었습니다.");
+                        location.href='/admin/show/management';
+                    },
+                    error : function(jqXHR, status, error){
+
+                        if(jqXHR.status == '401'){
+                            alert('로그인 후 이용해주세요');
+                            location.href = '/member/login';
+                        } else {
+                            alert(jqXHR.responseText);
+                        }
+                    }
+                });
+            }
+        }
     </script>
 </th:block>
 

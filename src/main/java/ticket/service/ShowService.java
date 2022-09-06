@@ -8,14 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ticket.constant.Classification;
 import ticket.dto.*;
-import ticket.entity.Show;
-import ticket.entity.ShowDate;
-import ticket.entity.ShowImg;
-import ticket.entity.ShowSeat;
-import ticket.repository.ShowDateRepository;
-import ticket.repository.ShowImgRepository;
-import ticket.repository.ShowRepository;
-import ticket.repository.ShowSeatRepository;
+import ticket.entity.*;
+import ticket.exception.DeleteBookedShowException;
+import ticket.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -35,6 +30,8 @@ public class ShowService {
 
     private final ShowImgRepository showImgRepository;
     private final ShowImgService showImgService;
+
+    private final BookRepository bookRepository;
 
     @Transactional
     public Long saveShow(ShowFormDto showFormDto,List<String> showDateTimeList ,List<MultipartFile> showImgFileList,
@@ -157,6 +154,11 @@ public class ShowService {
 
     @Transactional
     public Long deleteShow(Long showId) throws Exception {
+
+        if(bookRepository.existsByShowId(showId)){
+            throw new DeleteBookedShowException("이미 예매한 사용자가 있습니다");
+        }
+
         Show savedShow = showRepository.findById(showId).orElseThrow(EntityNotFoundException::new);
         showDateRepository.deleteAllByShowIdInQuery(savedShow);
         showSeatRepository.deleteAllByShowIdInQuery(savedShow);

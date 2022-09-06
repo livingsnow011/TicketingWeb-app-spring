@@ -66,7 +66,7 @@ public class LotteryService {
             if(i<showSeatCount){
                 book.changeBookStatus(BookStatus.BOOKED);
             }else{
-                book.changeBookStatus(BookStatus.CANCEL);
+                book.changeBookStatus(BookStatus.REFUNDED);
                 //TODO 환불 수행
                 User userScheduledForRefund = bookRepository.findUserById(book.getId());
                 userScheduledForRefund.refundPoint(price);

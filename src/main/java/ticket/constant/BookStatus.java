@@ -1,6 +1,6 @@
 package ticket.constant;
 
 public enum BookStatus {
-    BOOKING,CANCEL,REFUNDED,BOOKED,showDeleted
+    BOOKING,REFUNDED,BOOKED
 }
 

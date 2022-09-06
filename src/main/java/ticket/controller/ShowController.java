@@ -105,10 +105,11 @@ public class ShowController {
 
     @DeleteMapping(value = "/admin/show/{showId}")
     public @ResponseBody ResponseEntity deleteShow(@PathVariable("showId") Long showId){
+
         try {
             showService.deleteShow(showId);
         }catch (Exception e){
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<Long>(showId,HttpStatus.OK);

@@ -33,4 +33,5 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     @Query("select t.book from Ticket t where t.id=:id")
     Optional<Book> findBookById(@Param("id") Long id);
+
 }

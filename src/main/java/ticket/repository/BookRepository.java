@@ -25,4 +25,6 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     boolean existsByShowIdAndUser(Long showId, User user);
 
+    boolean existsByShowId(Long showId);
+
 }
