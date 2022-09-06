@@ -11,6 +11,7 @@ import ticket.dto.BookDto;
 import ticket.dto.BookHistDto;
 import ticket.dto.TicketDto;
 import ticket.entity.*;
+import ticket.exception.OverOfShowDateException;
 import ticket.repository.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -35,6 +36,10 @@ public class BookService {
                 orElseThrow(EntityNotFoundException::new);
         ShowDate showDate = showDateRepository.findById(bookDto.getDateId()).
                 orElseThrow(EntityNotFoundException::new);
+
+        if(showDate.getIsBooked()){
+            throw new OverOfShowDateException("이미 예매가 종료된 공연입니다");
+        }
 
         User user = userRepository.findByUserId(userId);
         user.usePoint(showSeat.getPrice());
