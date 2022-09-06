@@ -31,16 +31,11 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
 
-    //보통 1:N 관계에서 고아객체제거를 활성화 해주는 것이 좋다.
-    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<BookShow> bookShows = new ArrayList<>();
+    @OneToOne(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    private Ticket ticket;
 
-    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<Ticket> tickets = new ArrayList<>();
+    public Long showId;
 
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
 
     //test 용 지워
     public void setUser(User user) {
@@ -48,19 +43,14 @@ public class Book {
     }
 
     @Builder
-    Book(User user,LocalDateTime bookDate,BookStatus bookStatus,List<Ticket> tickets){
+    Book(User user,LocalDateTime bookDate,BookStatus bookStatus,Ticket ticket,Long showId){
         this.user = user;
         this.bookDate = bookDate;
         this.bookStatus = bookStatus;
-        for(Ticket ticket : tickets){
-            addTicket(ticket);
-        }
+        this.ticket = ticket;
+        this.showId = showId;
     }
 
-    public void addTicket(Ticket ticket){
-        tickets.add(ticket);
-        ticket.setBook(this);
-    }
 
     public void changeBookStatus(BookStatus bookStatus){
         this.bookStatus = bookStatus;

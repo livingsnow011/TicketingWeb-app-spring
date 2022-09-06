@@ -73,18 +73,18 @@
 
         <div class="card d-flex my-3">
 
-            <div th:each="ticket : ${book.ticketDtoList}" class="d-flex">
+            <div class="d-flex">
                 <div class="repImgDiv">
-                    <img th:src="${ticket.imgUrl}" class = "rounded repImg" th:alt="${ticket.showName}">
+                    <img th:src="${book.ticketDto.imgUrl}" class = "rounded repImg" th:alt="${book.ticketDto.showName}">
                 </div>
                 <div class="align-self-center w-75" style="text-align: center;">
                     <h4 th:text="' 주문 날짜 : ' + ${book.bookDate}"></h4>
                     <h4 th:text="' 주문 상태 : ' + ${book.bookStatus}"></h4>
-                    <span th:text="${ticket.showName}" class="fs24 font-weight-bold"></span>
+                    <span th:text="${book.ticketDto.showName}" class="fs24 font-weight-bold"></span>
                     <div class="fs18 font-weight-light">
-                        <span th:text="${ticket.showDate}"></span><br/>
-                        <span th:text="${ticket.grade} +'등급'"></span><br/>
-                        <span th:text="${ticket.price} +'원'"></span><br/>
+                        <span th:text="${book.ticketDto.showDate}"></span><br/>
+                        <span th:text="${book.ticketDto.grade} +'등급'"></span><br/>
+                        <span th:text="${book.ticketDto.price} +'원'"></span><br/>
                     </div>
                 </div>
 

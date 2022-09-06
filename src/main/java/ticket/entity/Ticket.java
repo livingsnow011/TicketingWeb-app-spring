@@ -25,7 +25,7 @@ public class Ticket {
     @JoinColumn(name = "show_seat_id")
     private ShowSeat showSeat;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 

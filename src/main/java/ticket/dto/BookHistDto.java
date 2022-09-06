@@ -20,16 +20,14 @@ public class BookHistDto {
     private LocalDateTime bookDate;
     private BookStatus bookStatus;
 
-    private List<TicketDto> ticketDtoList = new ArrayList<>();
+    private TicketDto ticketDto;
 
-    public void addTicketDto(TicketDto ticketDto){
-        ticketDtoList.add(ticketDto);
-    }
 
-    public BookHistDto(Book book){
+    public BookHistDto(Book book,TicketDto ticketDto){
         this.bookId = book.getId();
         this.bookDate = LocalDateTime.parse(book.getBookDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
         this.bookStatus = book.getBookStatus();
+        this.ticketDto = ticketDto;
     }
 
 }

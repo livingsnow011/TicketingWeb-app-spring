@@ -13,6 +13,9 @@ import java.util.Optional;
 
 public interface ShowDateRepository extends JpaRepository<ShowDate,Long> {
 
+    @Query("select sd.show.id from ShowDate sd where sd.id=:id")
+    Long findShowIdByShowDateId(@Param("id") Long showDateId);
+
     Optional<ShowDate> findById(Long id);
 
     List<ShowDate> findByShowIdOrderByShowDateAsc(Long showId);

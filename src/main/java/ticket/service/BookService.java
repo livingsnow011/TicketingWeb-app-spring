@@ -44,16 +44,17 @@ public class BookService {
         User user = userRepository.findByUserId(userId);
         user.usePoint(showSeat.getPrice());
 
-        List<Ticket> tickets = new ArrayList<>();
         Ticket ticket = Ticket.builder().showSeat(showSeat).showDate(showDate).build();
-        tickets.add(ticket);
 
         Book book = Book.builder().
                 user(user).
                 bookDate(LocalDateTime.now()).
                 bookStatus(BookStatus.BOOKING).
-                tickets(tickets).
+                ticket(ticket).
+                showId( showDateRepository.findShowIdByShowDateId(bookDto.getDateId())).
                 build();
+
+        ticket.setBook(book);
 
         bookRepository.save(book);
 
@@ -69,13 +70,10 @@ public class BookService {
         List<BookHistDto> bookHistDtoList = new ArrayList<>();
 
         for(Book book : bookList){
-            BookHistDto bookHistDto = new BookHistDto(book);
-            List<Ticket> ticketList = book.getTickets();
-            for (Ticket ticket : ticketList){
-                ShowImg showImg = showImgRepository.findByShowIdAndRepImgYn(ticketRepository.findShowIdByTicketId(ticket.getId()),"Y");
-                TicketDto ticketDto = new TicketDto(ticket, showImg.getImgUrl());
-                bookHistDto.addTicketDto(ticketDto);
-            }
+            Ticket ticket = book.getTicket();
+            ShowImg showImg = showImgRepository.findByShowIdAndRepImgYn(ticketRepository.findShowIdByTicketId(ticket.getId()),"Y");
+            TicketDto ticketDto = new TicketDto(ticket, showImg.getImgUrl());
+            BookHistDto bookHistDto = new BookHistDto(book,ticketDto);
 
             bookHistDtoList.add(bookHistDto);
         }
