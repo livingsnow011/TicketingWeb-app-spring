@@ -1,6 +1,7 @@
 package ticket.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import ticket.dto.UserHistDto;
 import ticket.entity.User;
 import ticket.repository.UserRepository;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class UserService implements UserDetailsService {
     private void validateDuplicateUser(User user){
         User findUser = userRepository.findByUserId(user.getUserId());
         if(findUser!=null){
+            log.error("중복된 아이디 {} ",findUser.getUserId());
             throw new IllegalStateException("중복된 아이디가 있습니다.");
         }
     }
@@ -39,6 +42,7 @@ public class UserService implements UserDetailsService {
         }
 
         //이럴줄 몰랐음....
+        //다음에는 user 말고 member 로 지어라
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUserId())
                 .password(user.getPassword())

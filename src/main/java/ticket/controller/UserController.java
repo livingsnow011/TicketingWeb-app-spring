@@ -1,6 +1,7 @@
 package ticket.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import ticket.service.UserService;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @Controller
@@ -38,12 +40,12 @@ public class UserController {
         try{
             User user = User.createUser(signUpFormDto, passwordEncoder);
             userService.saveUser(user);
+            log.info("사용자 {} 회원가입", user.getUserId());
         } catch (IllegalStateException e){
+            log.error("회원 가입 도중 에러 발생");
             model.addAttribute("errorMessage", e.getMessage());
             return "user/userForm";
         }
-
-
         return "redirect:/";
     }
 

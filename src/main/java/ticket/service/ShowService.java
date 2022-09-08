@@ -1,6 +1,7 @@
 package ticket.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -40,6 +42,7 @@ public class ShowService {
         //공연 등록
         Show show = showFormDto.createShow();
         showRepository.save(show);
+        log.info("공연 등록, 공연 이름 : {} ", show.getShowName());
 
         //공연 날짜 등록
         for (int i = 0; i < showDateTimeList.size(); i++) {
@@ -50,6 +53,7 @@ public class ShowService {
             ShowDate showDate = ShowDate.builder().showDate(localDateTime).show(show).build();
             showDateRepository.save(showDate);
         }
+        log.info("공연 {} 공연 날짜 {} 개 등록", show.getShowName(), showDateTimeList.size());
 
         //공연 좌석 등록
         for (int i = 0; i < seatGradeList.size(); i++) {
@@ -63,6 +67,7 @@ public class ShowService {
                     build();
             showSeatRepository.save(showSeat);
         }
+        log.info("공연 {} 공연 좌석 등급 {} 개 등록", show.getShowName(), seatGradeList.size());
 
         //공연 이미지 등록
         for (int i = 0; i < showImgFileList.size(); i++) {
@@ -77,6 +82,7 @@ public class ShowService {
 
             showImgService.saveShowImg(showImg,showImgFileList.get(i));
         }
+        log.info("공연 {} 공연 이미지 {} 개 등록", show.getShowName(), showImgFileList.size());
 
         return show.getId();
     }
@@ -149,6 +155,8 @@ public class ShowService {
             showImgService.updateShowImg(showImgIds.get(i),showImgFileList.get(i));
         }
 
+        log.info("공연 {} 수정",show.getShowName());
+
         return show.getId();
     }
 
@@ -165,20 +173,21 @@ public class ShowService {
         showImgService.deleteShowImgFile(showId);
         showImgRepository.deleteAllByShowIdInQuery(savedShow);
         showRepository.deleteByIdInQuery(showId);
+
+        log.info("공연 {} 삭제",savedShow.getShowName());
+
         return showId;
     }
 
     @Transactional(readOnly = true)
     public Page<ShowGetDto> findShowByClassification(Classification classification,Pageable pageable){
         Page<ShowGetDto> showList = showImgRepository.findByClassification(classification, pageable);
-
         return showList;
     }
 
     @Transactional(readOnly = true)
     public Page<ShowGetDto> findAllShow(Pageable pageable) {
         Page<ShowGetDto> showList = showImgRepository.findAllShow(pageable);
-
         return showList;
     }
 }

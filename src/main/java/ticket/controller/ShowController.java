@@ -1,6 +1,7 @@
 package ticket.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ShowController {
@@ -57,7 +59,7 @@ public class ShowController {
         try{
             showService.saveShow(showFormDto,showDateTimeList ,showImgFileList,seatGradeList,seatCountList,priceList);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            log.error("공연 등록 중 에러 발생 : {}", e.getMessage());
             model.addAttribute("errorMessage", "공연 등록 중 에러 발생");
             return "show/showForm";
         }

@@ -1,6 +1,7 @@
 package ticket.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ticket.constant.BookStatus;
@@ -14,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LotteryService {
@@ -39,11 +41,13 @@ public class LotteryService {
                     //TODO
                     //좌석이 예매한 티켓 수보다 많거나 같으면
                     //모든 티켓을 예매처리
+                    log.info("좌석 {} 개, 티켓 {} 개 추첨 불필요",showSeat.getSeatCount(),ticketIdList.size());
                     bookAllTicket(ticketIdList);
-                }else{
+                }else {
                     //TODO
                     //좌석이 예매한 티켓수보다 적다면
                     //티켓들을 추첨을 통해, 성공과 환불을 결정한다.
+                    log.info("티켓 {} 개, 좌석 {} 개 추첨 시작", ticketIdList.size(), showSeat.getSeatCount());
                     bookLottery(ticketIdList,showSeat.getSeatCount(),showSeat.getPrice());
                 }
             }
@@ -70,6 +74,7 @@ public class LotteryService {
                 //TODO 환불 수행
                 User userScheduledForRefund = bookRepository.findUserById(book.getId());
                 userScheduledForRefund.refundPoint(price);
+                log.info("userName : {} 추첨 실패, {} point 환불 수행", userScheduledForRefund.getName(), price);
             }
         }
     }

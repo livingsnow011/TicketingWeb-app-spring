@@ -15,7 +15,6 @@ import ticket.service.UserService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Autowired
     UserService userService;
      //시큐리티에서 filterChain 메서드를 통해 구현
