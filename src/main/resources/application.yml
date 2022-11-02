@@ -11,8 +11,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 #쿼리에 물음표로 출력되는 바인드 파라미터 출력
 #logging.level.org.hibernate.type.descriptor.sql=true
   
-#Live Reload 기능 활성화, 배포 시 주석처리
-spring.devtools.livereload.enabled=true
+
 #static,templates 가 안되서 추가 설정
 spring.thymeleaf.prefix=file:src/main/resources/templates/
 spring.web.resources.static-locations=file:src/main/resources/static/
