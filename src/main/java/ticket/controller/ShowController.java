@@ -98,6 +98,7 @@ public class ShowController {
         try{
             showService.updateShow(showFormDto, showImgFileList, showDateTimeList, seatGradeList, seatCountList, priceList);
         } catch (Exception e){
+            System.out.println(e.getMessage());
             model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
             return "show/showForm";
         }

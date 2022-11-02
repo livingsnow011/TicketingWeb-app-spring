@@ -11,11 +11,14 @@ import ticket.repository.ShowImgRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class ShowImgService {
+
+    private final S3Uploader s3Uploader;
 
     @Value("${showImgLocation}")
     private String showImgLocation;
@@ -28,11 +31,17 @@ public class ShowImgService {
         String oriImgName = showImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
+        String[] imgNameAndUrl;
 
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
-            imgName = fileService.uploadFile(showImgLocation, oriImgName, showImgFile.getBytes());
-            imgUrl = "/images/show/" + imgName;
+            try {
+                imgNameAndUrl = s3Uploader.uploadFiles(showImgFile, "show");
+                imgName = imgNameAndUrl[0];
+                imgUrl = imgNameAndUrl[1];
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         //공연 이미지 정보 저장
@@ -46,13 +55,21 @@ public class ShowImgService {
                     .orElseThrow(EntityNotFoundException::new);
 
             if(!StringUtils.isEmpty(savedShowImg.getImgName())){
-                fileService.deleteFile(showImgLocation+"/"+savedShowImg.getImgName());
+                s3Uploader.deleteS3(savedShowImg.getImgName());
             }
 
             String oriImgName = showImgFile.getOriginalFilename();
-            String imgName = fileService.uploadFile(showImgLocation, oriImgName, showImgFile.getBytes());
-            String imgUrl = "/images/show/" + imgName;
+            String imgName = "";
+            String imgUrl = "";
+            String[] imgNameAndUrl;
 
+            try {
+                imgNameAndUrl = s3Uploader.uploadFiles(showImgFile, "show");
+                imgName = imgNameAndUrl[0];
+                imgUrl = imgNameAndUrl[1];
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             savedShowImg.updateShowImg(oriImgName,imgName,imgUrl);
         }
     }
@@ -61,7 +78,7 @@ public class ShowImgService {
         List<ShowImg> savedShowImgList = showImgRepository.findByShowId(showId);
         for(ShowImg savedShowImg : savedShowImgList){
             if(!StringUtils.isEmpty(savedShowImg.getImgName())){
-                fileService.deleteFile(showImgLocation+"/"+savedShowImg.getImgName());
+                s3Uploader.deleteS3(savedShowImg.getImgName());
             }
         }
 
