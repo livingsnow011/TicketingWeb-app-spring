@@ -23,7 +23,7 @@
 hs_err_pid*
 
 # 프로퍼티 파일 이그노어
-*.properties
+src/main/resources/*.properties
 
 # 이미지 파일 무시, 진작에 했어야
 show/
