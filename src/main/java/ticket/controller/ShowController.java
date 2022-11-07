@@ -32,7 +32,7 @@ public class ShowController {
     @GetMapping(value = "/admin/show/new")
     public String showForm(Model model){
         model.addAttribute("showFormDto", new ShowFormDto());
-        return "/show/showForm";
+        return "show/showForm";
     }
 
     //너무 많은 param, map 을 써보는 것도 고려
