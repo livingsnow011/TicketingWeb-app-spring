@@ -38,18 +38,12 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         
-    - name: Write value to Properties-file
-      uses: christian-draeger/write-properties@1.1.0
-      with:
-        path: './src/main/resources/application-real.properties'
-        property: |          
-              spring.datasource.driver-class-name
-              spring.jpa.hibernate.ddl-auto
-              
-        value: |
-            com.mysql.cj.jdbc.Driver
-            validate
-
+    - name: Make application-real.properties
+      run: |
+        cd ./src/main/resources
+        touch ./application-real.properties
+        echo "${{secrets.PROPERTIES}}" >> ./application-real.properties
+      shell: bash
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew # 
