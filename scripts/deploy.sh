@@ -1,25 +1,14 @@
          #!/bin/bash
 
-         REPOSITORY=/home/ec2-user/app/step1
+         REPOSITORY=/home/ec2-user/app/step2
          PROJECT_NAME=TicketingWeb-app-spring
-
-         cd $REPOSITORY/$PROJECT_NAME/
-
-         echo "> Git Pull"
-
-         git pull
-
-         echo "> 프로젝트 Build 시작"
-
-         ./gradlew build -x test
 
          echo "> Build 파일 복사"
 
-         cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
+         cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
          echo "> 현재 구동중인 애플리케이션 pid 확인"
-
-         CURRENT_PID=$(pgrep -f ${PROJECT_NAME}.*.jar)
+         CURRENT_PID=$(pgrep -f $PROJECT_NAME)
 
          echo "$CURRENT_PID"
 
@@ -36,6 +25,8 @@
          JAR_NAME=$(ls $REPOSITORY/ |grep jar | tail -n 1)
 
          echo "> JAR Name: $JAR_NAME"
+         echo "> $JAR_NAME 에 실행권한 추가"
+         chmod +x $JAR_NAME
 
          nohup java -jar \
             -Dspring.config.location=classpath:/application-real.properties \
