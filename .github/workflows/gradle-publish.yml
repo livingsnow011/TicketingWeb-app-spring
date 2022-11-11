@@ -43,11 +43,11 @@ jobs:
       with:
         path: './src/main/resources/application-real.properties'
         property: |
-            spring.datasource.driver-class-name
-            spring.jpa.hibernate.ddl-auto
+            -spring.datasource.driver-class-name
+            -spring.jpa.hibernate.ddl-auto
         value: |
-            com.mysql.cj.jdbc.Driver
-            validate
+            -com.mysql.cj.jdbc.Driver
+            -validate
 
 
     - name: Grant execute permission for gradlew
