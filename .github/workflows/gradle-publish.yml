@@ -36,6 +36,6 @@ jobs:
       shell: bash
 
     - name: Build with Gradle
-      run: ./gradlew build -x test # test 패키지 제외하고 빌드
+      run: ./gradlew clean build -x test # test 패키지 제외하고 빌드
       shell: bash
 
