@@ -42,12 +42,13 @@ jobs:
       uses: christian-draeger/write-properties@1.1.0
       with:
         path: './src/main/resources/application-real.properties'
-        property: |
-            - spring.datasource.driver-class-name
-            - spring.jpa.hibernate.ddl-auto
+        property: |          
+              spring.datasource.driver-class-name
+              spring.jpa.hibernate.ddl-auto
+              
         value: |
-            - com.mysql.cj.jdbc.Driver
-            - validate
+            com.mysql.cj.jdbc.Driver
+            validate
 
 
     - name: Grant execute permission for gradlew
