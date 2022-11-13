@@ -67,6 +67,7 @@ jobs:
     - name: Generate deployment package 
       run: |
         mkdir -p before-deploy
+        chmod +x scripts/*.sh
         cp scripts/*.sh before-deploy/
         cp appspec.yml before-deploy/
         cp build/libs/*.jar before-deploy/
