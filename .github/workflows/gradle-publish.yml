@@ -72,7 +72,7 @@ jobs:
         cp build/libs/*.jar before-deploy/
         cd before-deploy && zip -r before-deploy *
         cd ../ && mkdir -p deploy
-        mv before-deploy/before-deploy.zip deploy/$PROJECT_NAME.zip
+#        mv before-deploy/before-deploy.zip deploy/$PROJECT_NAME.zip
       shell: bash
       
     - name: Make zip file
