@@ -40,10 +40,10 @@ public class SecurityConfig {
         http.authorizeRequests()
                 //.permitAll() 이것들을 허용하겠습니다.
                 // static 디렉토리 하위 파일들은 인증을 무시
-                .mvcMatchers("/css/**", "/js/**", "/img/**","/images/**").permitAll()
+                .mvcMatchers("/css/**", "/js/**", "/img/**","/images/**","/profile").permitAll()
                 // 아래와 같은 경로들은 인증을 무시
                 .mvcMatchers("/", "/users/**","/show/**","/showDtl/**").permitAll()
-                // /admin으로 시작하는 경로는 ADMIN role일 경우에만 접근 가능하도록 설정합니다.
+                // /admin으로 시작하는 경로는 ADMIN role 일 경우에만 접근 가능하도록 설정합니다.
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 //나머지 경로들은 인증을 요구합니다.
                 .anyRequest().authenticated();

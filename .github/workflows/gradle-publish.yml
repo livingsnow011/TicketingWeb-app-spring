@@ -43,6 +43,11 @@ jobs:
         cd ./src/main/resources
         touch ./application-real.properties
         echo "${{secrets.PROPERTIES}}" >> ./application-real.properties
+        touch ./application-real1.properties
+        echo "${{secrets.PROPERTIES1}}" >> ./application-real1.properties
+        touch ./application-real2.properties
+        echo "${{secrets.PROPERTIES2}}" >> ./application-real2.properties
+
       shell: bash
 
     - name: Grant execute permission for gradlew
