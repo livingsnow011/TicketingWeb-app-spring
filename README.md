@@ -87,7 +87,7 @@ SeSAC-CloudMSA-BackendProject-Team-4
 - Spring Boot 2.7.1
 - Spring Data JPA
 - Spring Security
-- Spring Cloud (S3 공연 이미지 저장소 )
+- Spring Cloud ( S3 공연 이미지 저장소 )
 
 #### Build
 - Gradle
@@ -125,15 +125,15 @@ SeSAC-CloudMSA-BackendProject-Team-4
 
 ### 공연 CRUD
 
-### 공연 추첨,예매 과정
+### 스케줄러를 활용한 예매,추첨 과정
 
 ### 인증, 인가 및 관리자 페이지
+
+### S3 이미지 저장소
 
 ### 페이징
 
 ### N + 1 문제
-
-### S3이미지 저장소
 
 ### CI/CD 무중단 배포 서비스 구축
 
