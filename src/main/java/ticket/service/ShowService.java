@@ -80,6 +80,7 @@ public class ShowService {
             else
                 showImg.setRepImgYn("N");
 
+            log.info("showImgService 공연 등록 시작");
             showImgService.saveShowImg(showImg,showImgFileList.get(i));
         }
         log.info("공연 {} 공연 이미지 {} 개 등록", show.getShowName(), showImgFileList.size());
