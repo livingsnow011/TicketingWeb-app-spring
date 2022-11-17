@@ -40,7 +40,7 @@ public class ShowImgService {
                 imgName = imgNameAndUrl[0];
                 imgUrl = imgNameAndUrl[1];
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
 
