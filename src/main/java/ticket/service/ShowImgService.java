@@ -1,7 +1,6 @@
 package ticket.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -34,16 +32,14 @@ public class ShowImgService {
         String imgName = "";
         String imgUrl = "";
         String[] imgNameAndUrl;
-        log.info("saveShowImg 메서드 시작");
+
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
             try {
-                log.info("try 구문 시작");
                 imgNameAndUrl = s3Uploader.uploadFiles(showImgFile, "show");
                 imgName = imgNameAndUrl[0];
                 imgUrl = imgNameAndUrl[1];
             } catch (Exception e) {
-                log.info("에러 캐치");
                 System.out.println(e.getMessage());
             }
         }
