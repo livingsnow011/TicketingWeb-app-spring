@@ -20,8 +20,8 @@ public class ShowImgService {
 
     private final S3Uploader s3Uploader;
 
-    @Value("${showImgLocation}")
-    private String showImgLocation;
+//    @Value("${showImgLocation}")
+//    private String showImgLocation;
 
     private final ShowImgRepository showImgRepository;
 
