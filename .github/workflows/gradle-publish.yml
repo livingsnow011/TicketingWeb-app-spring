@@ -78,6 +78,7 @@ jobs:
         cp build/libs/*.jar before-deploy/
         cd before-deploy && zip -r before-deploy *
         cd ../ && mkdir -p deploy
+        chmod +x /*.jar
         mv before-deploy/before-deploy.zip deploy/$PROJECT_NAME.zip
       shell: bash
       
