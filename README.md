@@ -264,9 +264,18 @@ AWS 계정의 Access key 와 Secret key 를 통해 계정 S3버킷과 연동을 
 
 ### 페이징
 
+저장된 공연들을 조회하는 페이지와 예매 내역을 보여주는 페이지에서는 모든 공연과 내역들을 한 번에 불러오는게 아닌, 페이징을 통해 게시글들을 나눴습니다.  
 
+JpaRepository를 상속한 클래스들에서 Page<~DTO> 타입을 반환하는 메서드를 정의하는 식으로 구현했습니다.   
+
+그런 다음 Controller에서 해당 api가 호출될 때 pageable객체를 생성하여, service -> repository 단으로 매개변수를 전달하는 식으로 페이징을 구현하였습니다.  
+
+페이징은 공연 이미지가 큼지막하게 보일 수 있도록 게시판 글목록이 아닌 9개의 공연을 격자형으로 볼 수 있도록 만들었습니다.
 
 ### CI/CD 무중단 배포 서비스 구축
+![img](https://raw.githubusercontent.com/livingsnow011/TicketingWeb-app-spring/main/Architecture.png)
+
+
 
 ### 도메인과 SSL 설정
 
