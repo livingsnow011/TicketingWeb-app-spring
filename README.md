@@ -22,10 +22,9 @@ SeSAC-CloudMSA-BackendProject-Team-4
   - [기능 시연](#기능-시연)
     - [공연 CRUD](#공연-crud)
     - [스케줄러를 활용한 예매,추첨 과정](#스케줄러를-활용한-예매추첨-과정)
-    - [인증,인가 및 관리자 페이지](#인증인가-및-관리자-페이지)
+    - [로그인 및 관리자 페이지](#로그인-및-관리자-페이지)
     - [S3 이미지 저장소](#s3-이미지-저장소)
     - [페이징](#페이징)
-    - [N+1 문제](#n1-문제)
     - [CI/CD 무중단 배포 서비스 구축](#cicd-무중단-배포-서비스-구축)
     - [도메인과 SSL 설정](#도메인과-ssl-설정)
   - [후기](#후기)
@@ -113,7 +112,6 @@ SeSAC-CloudMSA-BackendProject-Team-4
 - ModelMapper
 - thymeleaf-extras-springsecurity
 - thymeleaf-layout-dialect
-- h2database
 
 ## 프로젝트 목적
 ### 왜 선착순이 아닌 추첨으로 예매를 해야하나
@@ -241,17 +239,36 @@ cron 설정은 **(cron = "0 30 * * * ?")** 개발 과정에서는 매 시간 30�
 추첨의 경우 저는 받아온 티켓 아이디 리스트들을 **Collections.shuffle()** 메서드로 섞은 후 좌석 수만큼 예매 성공 처리를 하고, 나머지는 예매 실패 처리하였습니다.
 
 
-### 인증,인가 및 관리자 페이지
+### 로그인 및 관리자 페이지
+
+애플리케이션 인증방식은 Spring-security에서 제공하는 Form Login을 사용했습니다. 
+
+security 5.7.x 버전 이전 configure 메서드를 재작성하는 것이 deprecated되서 filterChain메서드를 통해 기능을 구현했습니다. 
+
+[인증 처리 재작성 부분](https://github.com/livingsnow011/TicketingWeb-app-spring/blob/c59cc0821de98fbd6120e921b6b405e27fd9399f/src/main/java/ticket/config/SecurityConfig.java#L22)  
+
+또한 사용자가 회원가입 시 스프링이 제공하는 BCryptPasswordEncoder를 통해 비밀번호를 암호화하였으며, thymeleaf-extras-springsecurity를 통해 페이지에서 사용자의 Role에 맞는 화면들을 분리하여 개발할 수 있었습니다. 
 
 ### S3 이미지 저장소
+
+공연 이미지들은 데이터베이스에 이름과 url 등의 형태로 저장 후, url을 불러오는 식으로 만들었습니다.  
+
+또한 addResourceHandler 설정을 통해 프로젝트 내에 File 클래스를 사용하여, 이미지를 생성했습니다.
+
+<img src='http://drive.google.com/uc?export=view&id=18L0jmhNrgXxDvUYlxjs2C-5CYz5lt7nd' />
+
+**개발 과정에서는 프로젝트 내 폴더 안에 이미지들을 저장했지만, 배포 과정에서는 S3버킷을 이미지 저장소로 사용하였습니다.**  
+
+AWS 계정의 Access key 와 Secret key 를 통해 계정 S3버킷과 연동을 할 수 있었고 프로젝트 내의 이미지 파일은 버킷에 넣자마자 삭제함으로써 공간을 차지할 일이 없어졌습니다.  
 
 
 ### 페이징
 
-### N+1 문제
+
 
 ### CI/CD 무중단 배포 서비스 구축
 
 ### 도메인과 SSL 설정
 
 ## 후기 
+### aws 서비스들을 정리하며...
