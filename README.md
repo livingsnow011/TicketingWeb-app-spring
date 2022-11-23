@@ -275,9 +275,26 @@ JpaRepository를 상속한 클래스들에서 Page<~DTO> 타입을 반환하는 
 ### CI/CD 무중단 배포 서비스 구축
 ![img](https://raw.githubusercontent.com/livingsnow011/TicketingWeb-app-spring/main/Architecture.png)
 
+배포 파트 교육과정이 끝난 후 제 개인적으로 CI/CD와 Nginx를 사용한 무중단 배포 구축 작업을 하였습니다.  
+
+AWS 서비스들에 대한 실습을 진행했지만, 프로젝트에 적용하는데 막막함이 있었고 과정에서 **스프링 부트와 AWS로 혼자 구현하는 웹서비스**라는 책을 많이 참고하여 진행했습니다.  
+
+중간에 travis CI 파트는 travis가 유료화 정책을 시행함에 따라 github action을 사용하여 repository에 push 시 s3로 빌드 파일을 전달하고, codedeploy를 통해 배포하는 식으로 작업하였습니다.  
+
+[travis ci 이슈](https://github.com/jojoldu/freelec-springboot2-webservice/issues/806#issue-1299987948)  
 
 
 ### 도메인과 SSL 설정
+
+마지막으로 무료로 도메인을 발급해주는 no-ip라는 사이트를 통해 무료 도메인을 발급받아 ticketingweb.ddns.net 도메인으로 애플리케이션에 접근할 수 있도록 하였습니다. 
+
+[https://www.noip.com](https://www.noip.com/)  
+
+또한 Lets Encrypt라는 인증기관을 통해서 certbot 도구로 SSL인증서를 발급받아, 443 포트를 통해 https를 적용할 수 있도록 하였습니다.
+
+[https://letsencrypt.org/ko](https://letsencrypt.org/ko/)  
+
+
 
 ## 후기 
 ### aws 서비스들을 정리하며...
